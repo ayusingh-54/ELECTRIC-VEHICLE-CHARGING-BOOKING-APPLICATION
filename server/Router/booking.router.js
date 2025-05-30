@@ -10,25 +10,25 @@ const {
 
 const router = express.Router();
 
-// POST /booking/new-booking
+// Create a new booking
 router.post("/new-booking", bookAStation);
 
-// GET /booking/get-all-bookings
+// Get all bookings
 router.get("/get-all-bookings", getAllBookings);
 
-// GET /booking/:id
-router.get("/:id", getBookingById);
+// Get booking by ID
+router.get("/get-booking-by-id/:id", getBookingById);
 
-// GET /booking/user/get-all-bookings/:userId
+// Get all bookings of a user
 router.get("/user/get-all-bookings/:userId", getAllBookingOfAUser);
 
-// GET /booking/station/get-all-bookings/:stationOwnerId
+// Get all bookings of a station owner
 router.get(
   "/station/get-all-bookings/:stationOwnerId",
   getAllBookingsOfAStationUser
 );
 
-// DELETE /booking/delete-slot-by-id/:id
+// Delete booking by ID
 router.delete("/delete-slot-by-id/:id", deleteSlotById);
 
 module.exports = router;

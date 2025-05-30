@@ -1,31 +1,34 @@
 import { Container } from "react-bootstrap";
-import { FaSearchLocation } from "react-icons/fa";
+import { FaSearchLocation, FaMapMarkedAlt, FaRoute } from "react-icons/fa";
 import { FaChargingStation } from "react-icons/fa";
 import PropTypes from "prop-types";
 import "./styles/explanationBox.css";
 
 const ExplanationBox = ({ boxNo }) => {
   const iconStyles = {
-    fontSize: "40px",
-    color: "#2ddf3c",
+    fontSize: "44px",
+    color: "white",
   };
+
   const box1 = {
     icon: <FaSearchLocation style={iconStyles} />,
-    heading: "Search for the station name",
+    heading: "Search & Discover Stations",
     description:
-      "Type and search for the station name as you wish in the search input easily and quickly",
+      "Easily find charging stations near you by searching location names, addresses, or browsing our interactive map with real-time availability.",
   };
+
   const box2 = {
-    icon: <FaChargingStation style={iconStyles} />,
-    heading: "Find the nearest location point",
+    icon: <FaMapMarkedAlt style={iconStyles} />,
+    heading: "View Real-Time Information",
     description:
-      "Find the closest location point around you on map, make sure the station name is correct.",
+      "Get detailed information about each station including available ports, charging speeds, pricing, and user reviews before you travel.",
   };
+
   const box3 = {
-    icon: <FaSearchLocation style={iconStyles} />,
-    heading: "Follow the path on the map",
+    icon: <FaChargingStation style={iconStyles} />,
+    heading: "Book & Charge Instantly",
     description:
-      "You will get information that station is still empty or not before leaving for your destination",
+      "Reserve your charging slot in advance, navigate to the station with GPS directions, and start charging with just a few taps on your phone.",
   };
 
   let activeBox = box1;
@@ -34,6 +37,7 @@ const ExplanationBox = ({ boxNo }) => {
   } else if (boxNo === "box-3") {
     activeBox = box3;
   }
+
   return (
     <Container className="explanation-box">
       <div>{activeBox.icon}</div>
@@ -42,6 +46,7 @@ const ExplanationBox = ({ boxNo }) => {
     </Container>
   );
 };
+
 export default ExplanationBox;
 
 ExplanationBox.propTypes = {

@@ -1,4 +1,82 @@
 .home-page-container {
-  margin-top: 50px;
-  background-color: #e5f5df;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* Loading animation for page sections */
+.home-page-container > * {
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Ensure proper spacing between sections */
+.home-page-container > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero section takes full viewport */
+.home-page-container .home-welcome-container {
+  position: relative;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+/* Yellow banner appears on scroll */
+.home-page-container .yellow-banner {
+  position: relative;
+  z-index: 10;
+  margin: 0;
+  width: 100%;
+}
+
+/* Other sections follow normal flow */
+.home-page-container .explanation,
+.home-page-container .features-section,
+.home-page-container .testimonials-section,
+.home-page-container .newsletter-section {
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 768px) {
+  .home-page-container {
+    padding: 0;
+  }
+  
+  .home-page-container .home-welcome-container {
+    height: 100vh;
+    width: 100vw;
+  }
 }

@@ -1,12 +1,19 @@
 #custom-navbar-styles {
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
   width: 100%;
-  z-index: 10;
+  z-index: 1050;
   box-sizing: border-box;
   display: flex;
   flex-wrap: nowrap;
-  padding-left: 40px;
+  padding: 8px 40px;
+  min-height: 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 .my-nav-container {
@@ -17,73 +24,160 @@
 }
 .logo {
   width: 130px;
+  height: auto;
 }
 
 .nav-right {
-  width: 30%;
-  justify-content: space-around;
+  width: auto;
+  justify-content: flex-end;
   align-items: center;
-  /* background-color: red; */
+  gap: 15px;
 }
 
 .charging-icon {
-  margin-bottom: 5px;
+  margin-bottom: 2px;
+  margin-right: 5px;
 }
 
 .find-stations {
   font-weight: 600;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.find-stations:hover {
+  background-color: rgba(0, 115, 182, 0.1);
+  color: #0073b6;
 }
 
 .nav-link {
-  color: black;
+  color: #333 !important;
   font-weight: 600;
-  transition: transform 0.2s ease;
+  transition: all 0.3s ease;
+  padding: 8px 12px !important;
+  border-radius: 8px;
 }
 
 .nav-link:hover {
-  color: black;
-  font-weight: 700;
-  transform: translateY(-2px);
+  color: #0073b6 !important;
+  background-color: rgba(0, 115, 182, 0.1);
+  transform: translateY(-1px);
 }
 
 .signin-btn,
 .login-btn-2 {
-  border-radius: 30px;
-  height: 28px;
+  border-radius: 25px;
+  height: 36px;
   font-size: 14px;
-  padding: 0;
-  width: 73px;
+  padding: 0 20px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid #0073b6;
+}
+
+.signin-btn {
+  background-color: transparent;
+  color: #0073b6;
+  border: 2px solid #0073b6;
+}
+
+.signin-btn:hover {
+  background-color: #0073b6;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 115, 182, 0.3);
 }
 
 .login-btn-2 {
-  background-color: black;
+  background-color: #0073b6;
   color: white;
+  border: 2px solid #0073b6;
 }
+
 .login-btn-2:hover {
-  border: 1px solid black;
-  color: black;
-  background-color: white;
+  background-color: transparent;
+  color: #0073b6;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 115, 182, 0.3);
 }
 
 .navbar-brand-logo {
   cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-/* media query  */
-@media screen and (max-width: 768px) {
+.navbar-brand-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Media Queries */
+@media screen and (max-width: 992px) {
+  #custom-navbar-styles {
+    padding: 8px 20px;
+  }
+  
+  .navbar-collapse {
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    margin-top: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
   .nav-right {
-    width: 70%;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
+  }
+  
+  .nav-link {
+    text-align: center;
+    margin: 5px 0;
+  }
+  
+  .nav-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .signin-btn,
+  .login-btn-2 {
+    width: 100%;
+    height: 40px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  #custom-navbar-styles {
+    padding: 8px 15px;
+  }
+  
+  .logo {
+    width: 100px;
   }
 }
 
 @media screen and (max-width: 576px) {
-  .nav-right {
-    width: 20%;
-    margin-right: 20px;
+  #custom-navbar-styles {
+    padding: 8px 10px;
   }
+  
+  .nav-right {
+    width: 100%;
+  }
+  
   .nav-right-login {
-    width: 50%;
-    margin-right: 0;
+    width: 100%;
+  }
+  
+  .logo {
+    width: 90px;
   }
 }

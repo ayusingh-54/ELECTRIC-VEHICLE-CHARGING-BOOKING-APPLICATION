@@ -16,15 +16,19 @@ const bookingSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    vehicleType: {
+      type: String,
+      required: true,
+      enum: ["two-wheeler", "four-wheeler"],
+    },
     vehicleNumber: {
       type: String,
       required: true,
-      trim: true,
     },
-    vehicleType: {
+    status: {
       type: String,
-      enum: ["two-wheeler", "four-wheeler"],
-      required: true,
+      default: "active",
+      enum: ["active", "completed", "cancelled"],
     },
   },
   {

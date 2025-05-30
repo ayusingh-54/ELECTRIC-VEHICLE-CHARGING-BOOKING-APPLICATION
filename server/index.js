@@ -32,33 +32,36 @@ app.use("/booking", bookingRouter);
 // Root route
 app.get("/", (req, res) => {
   res.json({
-    message: "EV Locator Server is running!",
+    message: "EvoltSaft Server is running!",
     timestamp: new Date().toISOString(),
   });
 });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ message: "Something went wrong!" });
-});
-
-// MongoDB connection
+// Database connection
 mongoose
-  .connect(process.env.MONGO_DB_URL, {
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ev-locator", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to MongoDB successfully");
-    app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
-      console.log(`Server URL: http://localhost:${PORT}`);
-    });
+    console.log("Connected to MongoDB");
   })
   .catch((error) => {
     console.error("MongoDB connection error:", error);
-    process.exit(1);
   });
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Something went wrong!",
+    error: process.env.NODE_ENV === "production" ? {} : err.stack,
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
 
 module.exports = app;

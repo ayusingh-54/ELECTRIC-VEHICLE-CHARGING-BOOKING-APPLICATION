@@ -1,0 +1,241 @@
+.newsletter-section {
+  padding: 80px 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.newsletter-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: rotate 20s linear infinite;
+}
+
+.newsletter-content {
+  color: white;
+  position: relative;
+  z-index: 2;
+}
+
+.newsletter-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+  backdrop-filter: blur(10px);
+}
+
+.newsletter-icon svg {
+  font-size: 35px;
+  color: white;
+}
+
+.newsletter-content h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.newsletter-content p {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+.newsletter-benefits {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px 20px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.benefit-item:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(10px);
+}
+
+.benefit-icon {
+  color: #ffd700;
+  font-size: 20px;
+}
+
+.benefit-item span {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.newsletter-form-container {
+  position: relative;
+  z-index: 2;
+}
+
+.newsletter-form {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.newsletter-form h3 {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.email-input {
+  flex: 1;
+  padding: 15px 20px;
+  border: 2px solid #e9ecef;
+  border-radius: 50px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.email-input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.subscribe-btn {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  padding: 15px 30px;
+  border-radius: 50px;
+  color: white;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.subscribe-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.subscribe-btn:disabled {
+  opacity: 0.7;
+  transform: none;
+}
+
+.privacy-text {
+  color: #5a6c7d;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 10px;
+}
+
+.success-message {
+  text-align: center;
+  border: none;
+  background: rgba(40, 167, 69, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  border: 2px solid #28a745;
+}
+
+.success-message h4 {
+  color: #28a745;
+  margin-bottom: 15px;
+}
+
+.success-message p {
+  color: #155724;
+  margin: 0;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  .newsletter-section {
+    padding: 60px 0;
+  }
+  
+  .newsletter-content h2 {
+    font-size: 2rem;
+  }
+  
+  .newsletter-content p {
+    font-size: 1.1rem;
+  }
+  
+  .newsletter-form {
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+  
+  .form-group {
+    flex-direction: column;
+  }
+  
+  .subscribe-btn {
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .benefit-item {
+    padding: 12px 15px;
+  }
+  
+  .benefit-item span {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .newsletter-content h2 {
+    font-size: 1.8rem;
+  }
+  
+  .newsletter-form {
+    padding: 25px 15px;
+  }
+  
+  .newsletter-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .newsletter-icon svg {
+    font-size: 25px;
+  }
+}

@@ -10,22 +10,22 @@ const {
 
 const router = express.Router();
 
-// POST /ev/create
+// Create a new EV station
 router.post("/create", createStation);
 
-// GET /ev/all-stations
+// Get all stations
 router.get("/all-stations", getAllStations);
 
-// GET /ev/:id
-router.get("/:id", getStationById);
+// Get station by ID
+router.get("/station-id/:id", getStationById);
 
-// GET /ev/location/:location
+// Get stations by location
 router.get("/location/:location", getStationsByLocation);
 
-// DELETE /ev/delete/:id
+// Delete station by ID
 router.delete("/delete/:id", deleteStationById);
 
-// PATCH /ev/book-slot/:id
+// Book a slot (legacy endpoint)
 router.patch("/book-slot/:id", bookSlot);
 
 module.exports = router;

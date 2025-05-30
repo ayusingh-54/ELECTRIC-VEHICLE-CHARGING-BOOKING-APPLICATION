@@ -14,7 +14,9 @@ const createStation = async (req, res) => {
       totalPorts,
       pricePerHour,
       ownerId,
+      coordinates,
     } = req.body;
+
     if (
       !ownerId ||
       !stationName ||
@@ -25,6 +27,13 @@ const createStation = async (req, res) => {
     ) {
       return res.status(400).send({ message: "Please fill all the fields" });
     }
+
+    // Default coordinates if not provided
+    const stationCoordinates = coordinates || {
+      lat: 0,
+      lng: 0,
+    };
+
     const newEvStation = new EvModel({
       stationName,
       location,
@@ -32,12 +41,15 @@ const createStation = async (req, res) => {
       totalPorts,
       pricePerHour,
       ownerId,
+      coordinates: stationCoordinates,
     });
+
     await newEvStation.save();
     res
       .status(201)
       .send({ message: "New Station created successfully.", newEvStation });
   } catch (error) {
+    console.error("Error creating station:", error);
     return res.status(500).send("Server Error");
   }
 };

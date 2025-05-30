@@ -1,36 +1,124 @@
 .yellow-banner {
-  background-color: #ceff1b;
-  color: black;
-  border: 3px solid black;
-  width: 100%;
-  height: 50px;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  padding: 25px 0;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
+  gap: 30px;
+  color: #333;
   font-weight: 700;
-  white-space: nowrap;
+  font-size: 1.1rem;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  position: relative;
   overflow: hidden;
-}
-
-@keyframes bannerSlide {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-100%);
-  }
+  margin: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 .yellow-banner::before {
-  content: "🚗";
+  content: '';
   position: absolute;
-  top: 0;
-  left: 100%;
+  top: -50%;
+  left: -50%;
   width: 200%;
-  white-space: nowrap;
-  animation: bannerSlide 20s linear infinite;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.yellow-banner > div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.yellow-banner > div:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.yellow-banner svg {
+  font-size: 1.5rem;
+  color: #28a745;
+  animation: pulse 2s infinite;
 }
 
 .banner-animation {
-  animation: bannerSlide 20s linear infinite;
+  animation: slideInFromBottom 1s ease-out;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@media screen and (max-width: 1008px) {
+  .yellow-banner {
+    gap: 20px;
+    padding: 20px 0;
+  }
+  
+  .yellow-banner > div {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .yellow-banner {
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 25px 20px;
+  }
+  
+  .yellow-banner > div {
+    font-size: 0.9rem;
+    min-width: 200px;
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .yellow-banner {
+    padding: 20px 15px;
+    gap: 12px;
+  }
+  
+  .yellow-banner > div {
+    font-size: 0.85rem;
+    min-width: 180px;
+    padding: 8px 12px;
+  }
 }

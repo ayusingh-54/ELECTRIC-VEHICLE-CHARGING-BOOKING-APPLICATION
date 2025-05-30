@@ -1,43 +1,126 @@
 .explanation {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin: 0;
   text-align: center;
-  padding-top: 50px;
+  padding: 60px 20px;
   box-sizing: border-box;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  width: 100%;
+  min-height: auto;
+  position: relative;
+  z-index: 3;
+  clear: both;
 }
 .explanation > h1 {
-  color: black;
+  color: #2c3e50;
   font-weight: 900;
-  font-size: 25px;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+.explanation > h1::before {
+  content: "⚡";
+  position: absolute;
+  left: -50px;
+  top: 0;
+  font-size: 2rem;
+  color: #ffd700;
+  animation: bounce 2s infinite;
 }
 .explanation > hr {
-  height: 2px;
-  background-color: black;
-  width: 4%;
-  margin: auto;
+  height: 4px;
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  width: 120px;
+  margin: 20px auto 40px auto;
   opacity: 1;
+  border: none;
+  border-radius: 2px;
 }
 .explanation-box-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-  height: 250px;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 30px;
+  flex-wrap: wrap;
   padding: 20px;
-  margin-top: 20px;
+  min-height: auto;
+}
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
-/* media query  */
-@media screen and (max-width: 1000px) {
+/* Media Queries */
+@media screen and (max-width: 1200px) {
+  .explanation {
+    padding: 50px 20px;
+  }
+  
   .explanation-box-container {
-    flex-wrap: wrap;
-    height: 475px;  
     gap: 20px;
+    max-width: 900px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .explanation {
+    padding: 50px 15px;
+  }
+  
+  .explanation > h1 {
+    font-size: 2.2rem;
+  }
+  
+  .explanation > h1::before {
+    left: -40px;
+    font-size: 1.8rem;
+  }
+  
+  .explanation-box-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 600px;
   }
 }
 
 @media screen and (max-width: 768px) {
+  .explanation {
+    padding: 40px 10px;
+  }
+  
+  .explanation > h1 {
+    font-size: 2rem;
+  }
+  
+  .explanation > h1::before {
+    left: -35px;
+    font-size: 1.5rem;
+  }
+  
   .explanation-box-container {
-    height: 745px;  
+    gap: 15px;
+    padding: 10px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .explanation {
+    padding: 35px 5px;
+  }
+  
+  .explanation > h1 {
+    font-size: 1.8rem;
+  }
+  
+  .explanation > h1::before {
+    display: none;
   }
 }

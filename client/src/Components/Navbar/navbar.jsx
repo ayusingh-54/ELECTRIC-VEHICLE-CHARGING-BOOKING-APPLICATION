@@ -12,6 +12,7 @@ import { Toast, ToastContainer } from "react-bootstrap";
 import { useMediaQuery } from "react-responsive";
 import { CgProfile } from "react-icons/cg";
 import { FcBusinessman } from "react-icons/fc";
+import { FaMapMarkerAlt } from "react-icons/fa";
 import "./navbar.css";
 
 const NavbarComponent = () => {
@@ -60,95 +61,110 @@ const NavbarComponent = () => {
 
   return (
     <>
-      <Navbar id="custom-navbar-styles" fixed="top" data-bs-theme="dark">
+      <Navbar
+        id="custom-navbar-styles"
+        fixed="top"
+        expand="lg"
+        data-bs-theme="light"
+      >
         <Nav className="nav-left me-auto">
           <Navbar.Brand className="navbar-brand-logo" onClick={redirectHome}>
             <Image
               className="logo"
-              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTMwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzAwNzNiNiI+RVYgTG9jYXRvcjwvdGV4dD4KPC9zdmc+"
-              alt="logo"
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTMwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTMwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1IiB5PSIyNSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iIzAwNzNiNiI+RXZvbHRzb2Z0PC90ZXh0Pgo8L3N2Zz4="
+              alt="Evoltsoft Logo"
             />
           </Navbar.Brand>
         </Nav>
 
-        <Nav
-          className={`nav-right ${
-            isMobile && isUserLogin && "nav-right-login"
-          }`}
-        >
-          {!isMobile ? (
-            <>
-              <div className="find-stations" onClick={redirectStation}>
-                Find stations <FaChargingStation className="charging-icon" />
-              </div>
-
-              {isUserLogin ? (
-                <>
-                  <Nav.Link>
-                    <div onClick={redirectProfile}>
-                      {" "}
-                      Profile
-                      {/* <FcBusinessman/> */}
-                    </div>
-                  </Nav.Link>
-
-                  <Nav.Link>
-                    <Button onClick={userLogout} className="login-btn-2">
-                      {" "}
-                      Log out
-                    </Button>
-                  </Nav.Link>
-                </>
-              ) : (
-                <Stack direction="horizontal" className="nav-btns">
-                  <Nav.Link>
-                    <Button
-                      onClick={redirectSignup}
-                      className="signin-btn"
-                      variant="outline-dark"
-                    >
-                      {" "}
-                      Sign up
-                    </Button>
-                  </Nav.Link>
-                  <Nav.Link>
-                    <Button onClick={redirectLogin} className="login-btn-2">
-                      {" "}
-                      Log in
-                    </Button>
-                  </Nav.Link>
-                </Stack>
-              )}
-            </>
-          ) : (
-            <>
-              {isUserLogin ? (
-                <>
-                  <div className="find-stations" onClick={redirectStation}>
-                    Find stations{" "}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav
+            className={`nav-right ms-auto ${
+              isMobile && isUserLogin && "nav-right-login"
+            }`}
+          >
+            {!isMobile ? (
+              <>
+                <Nav.Link className="nav-link" onClick={redirectStation}>
+                  <span className="find-stations">
                     <FaChargingStation className="charging-icon" />
-                  </div>
-                  <Nav.Link>
-                    <Button onClick={userLogout} className="login-btn-2">
-                      {" "}
-                      Log out
-                    </Button>
-                  </Nav.Link>
-                </>
-              ) : (
-                <Stack direction="horizontal" className="nav-btns">
-                  <Nav.Link>
-                    <Button onClick={redirectLogin} className="login-btn-2">
-                      {" "}
-                      Log in
-                    </Button>
-                  </Nav.Link>
-                </Stack>
-              )}
-            </>
-          )}
-        </Nav>
+                    Find Stations
+                  </span>
+                </Nav.Link>
+
+                <Nav.Link className="nav-link" onClick={() => navigate("/map")}>
+                  <span className="find-stations">
+                    <FaMapMarkerAlt className="charging-icon" />
+                    Map View
+                  </span>
+                </Nav.Link>
+
+                {isUserLogin ? (
+                  <>
+                    <Nav.Link className="nav-link" onClick={redirectProfile}>
+                      <span className="find-stations">
+                        <CgProfile className="charging-icon" />
+                        Profile
+                      </span>
+                    </Nav.Link>
+
+                    <Nav.Link>
+                      <Button onClick={userLogout} className="login-btn-2">
+                        Log out
+                      </Button>
+                    </Nav.Link>
+                  </>
+                ) : (
+                  <Stack direction="horizontal" className="nav-btns" gap={2}>
+                    <Nav.Link>
+                      <Button
+                        onClick={redirectSignup}
+                        className="signin-btn"
+                        variant="outline-primary"
+                      >
+                        Sign up
+                      </Button>
+                    </Nav.Link>
+                    <Nav.Link>
+                      <Button onClick={redirectLogin} className="login-btn-2">
+                        Log in
+                      </Button>
+                    </Nav.Link>
+                  </Stack>
+                )}
+              </>
+            ) : (
+              <>
+                {isUserLogin ? (
+                  <>
+                    <div className="find-stations" onClick={redirectStation}>
+                      Find stations{" "}
+                      <FaChargingStation className="charging-icon" />
+                    </div>
+                    <Nav.Link>
+                      <Button onClick={userLogout} className="login-btn-2">
+                        {" "}
+                        Log out
+                      </Button>
+                    </Nav.Link>
+                  </>
+                ) : (
+                  <Stack direction="horizontal" className="nav-btns">
+                    <Nav.Link>
+                      <Button onClick={redirectLogin} className="login-btn-2">
+                        {" "}
+                        Log in
+                      </Button>
+                    </Nav.Link>
+                  </Stack>
+                )}
+              </>
+            )}
+          </Nav>
+        </Navbar.Collapse>
       </Navbar>
+
       <ToastContainer position="top-center">
         <Toast
           className="toast-msg"
@@ -165,4 +181,5 @@ const NavbarComponent = () => {
     </>
   );
 };
+
 export default NavbarComponent;

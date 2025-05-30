@@ -1,7 +1,7 @@
 {
   "name": "ev-locator-server",
   "version": "1.0.0",
-  "description": "EV Locator Backend Server",
+  "description": " Backend Server",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

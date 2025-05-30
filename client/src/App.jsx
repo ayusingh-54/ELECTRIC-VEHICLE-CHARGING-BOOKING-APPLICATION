@@ -9,6 +9,7 @@ import { useState } from "react";
 import ProfilePage from "./Pages/Profile";
 import "./App.css";
 import BookSlot from "./Pages/BookSlot";
+import MapView from "./Pages/MapView";
 
 function App() {
   const [isUserLogin, setIsUserLogin] = useState(false);
@@ -31,6 +32,7 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/stations" element={<Station />}></Route>
+            <Route path="/map" element={<MapView />}></Route>
             <Route path="/profile" element={<ProfilePage />}></Route>
             <Route path="/book-slot/:evStationObjectId" element={<BookSlot />}>
               {" "}
@@ -39,11 +41,12 @@ function App() {
             <Route path="/admin/login" element={<Login />}></Route>
             <Route path="/admin/signup" element={<Signup />}></Route>
             <Route path="/admin/stations" element={<Station />}></Route>
+            <Route path="/admin/map" element={<MapView />}></Route>
             <Route path="/admin/profile" element={<ProfilePage />}></Route>
             <Route
               path="/admin/*"
               element={
-                <h1> 404 - check the URLS / /login /signup /stations </h1>
+                <h1> 404 - check the URLS / /login /signup /stations /map </h1>
               }
             >
               {" "}
@@ -51,7 +54,7 @@ function App() {
             <Route
               path="/*"
               element={
-                <h1> 404 - check the URLS / /login /signup /stations </h1>
+                <h1> 404 - check the URLS / /login /signup /stations /map </h1>
               }
             >
               {" "}

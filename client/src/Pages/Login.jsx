@@ -223,7 +223,7 @@ const Login = () => {
                   <div>User</div>
                   <div>Privacy Policy</div>
                   <div>Send feedback</div>
-                  <div className="ms-auto credit">EV Locator © 2023</div>
+                  <div className="ms-auto credit">EvoltSaft © 2025</div>
                 </Stack>
               </div>
             )}

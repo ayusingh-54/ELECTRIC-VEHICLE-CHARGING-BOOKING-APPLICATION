@@ -23,7 +23,7 @@ const Footer = () => {
     <div className="my-footer">
       <div>
         <Stack>
-          <h4 className="footer-logo">EV Locator </h4>
+          <h4 className="footer-logo">EvoltSaft </h4>
           <InputGroup className="footer-mail">
             <InputGroup.Text>
               <AiOutlineMail />
@@ -65,7 +65,7 @@ const Footer = () => {
             <Stack className="my-stack">
               <p>Contact us</p>
               <p>(+91) 123-456-7890</p>
-              <p>evlocator@gmail.com</p>
+              <p>EvoltSaft@gmail.com</p>
             </Stack>
           </>
         )}
@@ -84,7 +84,7 @@ const Footer = () => {
         </Stack>
       </div>
       <div className="footer-credit">
-        <p>© 2023 EV Locator</p>
+        <p>© 2025 EvoltSaft</p>
         <div>
           <p>Terms of Service</p>
           <p>Privacy Policy</p>
