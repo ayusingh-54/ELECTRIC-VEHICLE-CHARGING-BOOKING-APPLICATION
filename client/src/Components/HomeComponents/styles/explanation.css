@@ -1,0 +1,43 @@
+.explanation {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  padding-top: 50px;
+  box-sizing: border-box;
+}
+.explanation > h1 {
+  color: black;
+  font-weight: 900;
+  font-size: 25px;
+}
+.explanation > hr {
+  height: 2px;
+  background-color: black;
+  width: 4%;
+  margin: auto;
+  opacity: 1;
+}
+.explanation-box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 250px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+/* media query  */
+@media screen and (max-width: 1000px) {
+  .explanation-box-container {
+    flex-wrap: wrap;
+    height: 475px;  
+    gap: 20px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .explanation-box-container {
+    height: 745px;  
+  }
+}

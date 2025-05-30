@@ -1,0 +1,116 @@
+/* home component  */
+.home-welcome-container {
+  margin: 20px;
+  margin-top: 57px;
+  background-color: #e0f1f8;
+  /* background-color: hsl(21, 94%, 39%); */
+  height: 500px;
+  width: 100%;
+  display: flex;
+}
+
+.home-welcome-left-container {
+  width: 120%;
+  padding-left: 20px;
+  box-sizing: border-box;
+}
+
+.home-welcome-left-container > div {
+  position: relative;
+  top: 100px;
+}
+.home-welcome-left-container > div h1 {
+  color: black;
+  font-size: 227%;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.charging-word {
+  color: #1c8029;
+}
+
+.home-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60%;
+}
+
+.home-search-container .input-group {
+  width: 74%;
+  border: 1px solid black;
+  border-radius: 2px;
+  box-shadow: 3px 3px 2px;
+}
+.home-search-container button {
+  background-color: #ebce35;
+  border: 1px solid black;
+  height: 35px;
+  box-shadow: 3px 3px 2px;
+  width: 63px;
+  border-radius: 2px;
+}
+
+.home-search-container button:hover {
+  box-shadow: 0 0;
+}
+.home-welcome-img-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-welcome-img-div img {
+  width: 90%;
+  height: 330px;
+}
+
+/* media query  */
+@media screen and (max-width: 1000px) {
+  .home-welcome-container {
+    height: 550px;
+    padding: 20px 42px;
+  }
+  .home-welcome-img-div img {
+    width: 97%;
+    height: 308px;
+  }
+  .home-welcome-left-container > div h1 {
+    font-size: 36px;
+  }
+  .home-welcome-left-container > div {
+    width: 100%;
+  }
+  .home-welcome-img-div img {
+    width: 94%;
+    height: 286px;
+}
+}
+
+@media screen and (max-width: 768px) {
+  .home-welcome-container {
+    height: 745px;
+    flex-direction: column;
+    padding: 10px;
+    justify-content: space-between;
+    margin: 0;
+  }
+  .home-welcome-left-container {
+    height: 57%;
+    padding: 20px;
+    width: 100%;
+  }
+  .home-welcome-left-container > div {
+    width: 100%;
+    text-align: center;
+    top: 50px;
+  }
+  .home-search-container {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  
+}

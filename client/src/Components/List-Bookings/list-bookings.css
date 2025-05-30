@@ -1,0 +1,41 @@
+.list-bookings-container {
+  height: 90%;
+  width: 77%;
+  background-color: white;
+  position: absolute;
+  right: 20px;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.booking-cancel-btn {
+  background-color: yellow;
+  color: black;
+  font-size: 0.9rem;
+  width: 80px;
+  border: none;
+  height: 30px;
+  font-weight: 700;
+  border-radius: 5px;
+}
+
+.list-table-div {
+  max-height: 350px;
+  max-width: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.list-table-div table {
+  width: 100%;
+  min-width: 100%;
+}
+.list-table-div th,
+.list-table-div td {
+  white-space: nowrap;
+}
+
+.no-booking-img {
+  width: 300px;
+  height: 200px;
+}

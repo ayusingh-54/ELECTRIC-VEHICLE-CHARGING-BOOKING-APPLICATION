@@ -1,0 +1,36 @@
+.yellow-banner {
+  background-color: #ceff1b;
+  color: black;
+  border: 3px solid black;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@keyframes bannerSlide {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.yellow-banner::before {
+  content: "🚗";
+  position: absolute;
+  top: 0;
+  left: 100%;
+  width: 200%;
+  white-space: nowrap;
+  animation: bannerSlide 20s linear infinite;
+}
+
+.banner-animation {
+  animation: bannerSlide 20s linear infinite;
+}

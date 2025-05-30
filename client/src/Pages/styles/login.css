@@ -1,0 +1,169 @@
+.toast-msg {
+  color: white;
+}
+.login-page {
+  background-color: #bddaf0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.trapezoid-box {
+  position: absolute;
+  left: 0;
+  width: 50%;
+  height: 100vh;
+  background-color: #0073b6;
+  clip-path: polygon(0% 0%, 60% 0, 100% 100%, 0% 100%);
+  z-index: 1;
+}
+.trapezoid-box-login {
+  background-color: #4389b1c2;
+}
+
+.login-container {
+  width: 60%;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  height: 470px;
+  z-index: 2;
+  border-radius: 15px;
+  background-color: white;
+  display: flex;
+  padding-left: 0;
+}
+
+.img-section {
+  width: 40%;
+  height: 100%;
+  background-color: #b7f0ff;
+  border-radius: 15px 0 0 15px;
+  position: relative;
+  padding: 0;
+  display: flex;
+}
+.login-img-section {
+  background-color: #cafcef;
+}
+
+.img-section img {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  border-radius: 0 0 0 15px;
+  padding: 0;
+}
+
+/* Login form  */
+.login-form-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 15px 15px 0;
+  padding: 20px 30px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.login-welcome {
+  color: #0073b6;
+  font-weight: 700;
+}
+
+.login-form-container form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+
+.login-form-container form input,
+.login-form-container form select {
+  background-color: #eaf3f9;
+  color: #0073b6;
+}
+
+.login-form-container form input::placeholder {
+  color: #0073b6;
+}
+
+.bottom-caption {
+  color: #0073b6;
+  font-size: 12px;
+  margin-top: 10px;
+}
+.bottom-caption span {
+  color: #0090f8;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-btn,
+.signup-btn {
+  background-color: #0073b6;
+  color: white;
+  width: 20%;
+  height: 40px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.signup-btn {
+  background-color: white;
+  color: #0073b6;
+  border: 1px solid #0073b6;
+}
+
+.footer,
+.footer-2 {
+  position: absolute;
+  bottom: 26px;
+  color: #0073b6b8;
+  font-size: 0.7rem;
+}
+.footer-2 {
+  bottom: 10px;
+  width: 90%;
+}
+.credit {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.remember-check-box {
+  color: #0073b6;
+}
+
+/* remove arrow from number input  */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* responsive media query*/
+@media screen and (max-width: 950px) {
+  .login-container {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .login-container {
+    width: 80%;
+    height: 70%;
+  }
+  .login-btn,
+  .signup-btn {
+    width: 35%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .login-container {
+    width: 90%;
+    height: 60%;
+  }
+  .login-form-container {
+    padding: 20px 20px;
+  }
+}

@@ -1,0 +1,64 @@
+.profile-container {
+  background-color: #c4bcff;
+  max-width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.profile-info-container {
+  height: 85%;
+  width: 80%;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  background-color: #eff0ff;
+  border-radius: 10px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+}
+
+.settings-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 137px;
+  height: 27px;
+  padding-left: 11px;
+  font-weight: 700;
+}
+
+.settings-div > p {
+  margin-bottom: 0;
+}
+.settings-div > * {
+  cursor: pointer;
+}
+
+.sidebar-options {
+  width: 10rem;
+  height: 300px;
+  position: relative;
+}
+
+.sidebar-items {
+  width: 100%;
+  height: 250px;
+  position: absolute;
+  bottom: 0;
+}
+
+.sidebar-items > div {
+  width: 100%;
+  height: 30px;
+  margin-top: 11px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  padding-left: 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.sidebar-items > div:hover {
+  background-color: #e6e3ff;
+}

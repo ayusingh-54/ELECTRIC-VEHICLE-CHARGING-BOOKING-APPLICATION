@@ -1,0 +1,41 @@
+.explanation-box {
+    width: 269px;
+    height: 191px;
+    background-color: #fff1d8;
+    /* margin-right: 62px; */
+    border-radius: 5px;
+    border: 1px solid black;
+    box-shadow: 2px 2px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 5px;
+    padding: 10px 25px;
+    cursor: help;
+}
+.explanation-box:hover {
+    box-shadow: 0 0;
+}
+
+.explanation-box>div {
+    margin-top: 5px;
+    height: 30px;
+    width: 30px;
+}
+
+.explanation-box>h6{
+    color: black;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 35px;
+}
+.explanation-box>p {
+    font-size: 12px;
+}
+
+@media screen and (max-width: 1000px) {
+    .explanation-box {
+        margin: 0;
+    }
+}

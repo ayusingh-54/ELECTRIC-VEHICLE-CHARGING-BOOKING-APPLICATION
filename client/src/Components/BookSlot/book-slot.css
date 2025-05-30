@@ -1,0 +1,128 @@
+.toast-msg {
+  color: white;
+}
+.book-slot-container {
+  margin-top: 60px;
+  max-width: 100%;
+  height: 500px;
+  background-color: #d5effb;
+  padding: 0 3.4%;
+  box-sizing: border-box;
+  display: flex;
+}
+.payment-form-heading {
+  text-align: center;
+  color: black;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+table {
+  width: 50%;
+}
+table,
+tr,
+td {
+  border: 1px solid black;
+}
+
+.book-slot-left {
+  height: 500px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.book-slot-left img {
+  width: 25rem;
+  height: 25rem;
+}
+
+.book-slot-right {
+  height: 500px;
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.payment-form-container {
+  width: 90%;
+  height: 350px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 2px, rgba(0, 0, 0, 0.07) 0px 2px 4px,
+    rgba(0, 0, 0, 0.07) 0px 4px 8px, rgba(0, 0, 0, 0.07) 0px 8px 16px,
+    rgba(0, 0, 0, 0.07) 0px 16px 32px, rgba(0, 0, 0, 0.07) 0px 32px 64px;
+  padding: 15px 3%;
+  box-sizing: border-box;
+}
+
+.station-details-1 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 17px;
+}
+
+.station-details-2 {
+  display: flex;
+  margin-top: 10px;
+}
+
+.schedule-div {
+  display: flex;
+  flex-direction: column;
+  height: 190px;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+.schedule-div button {
+  width: 30%;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+.schedule-div input,
+.schedule-div select {
+  width: 32%;
+  font-size: 0.9rem;
+  border-radius: 50px;
+  padding-left: 6px;
+  padding-right: 5px;
+  box-sizing: border-box;
+  border: none;
+}
+.pay-btn {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pay-btn {
+  background-image: linear-gradient(#0dccea, #0d70ea);
+  border: 0;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 5px 15px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1rem;
+  margin: 5px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 10px 15px;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.date-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.avail-msg {
+  color: green;
+  font-weight: 600;
+}
+.not-avail-msg {
+  color: red;
+  font-weight: 600;
+}

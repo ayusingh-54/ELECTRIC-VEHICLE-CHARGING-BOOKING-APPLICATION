@@ -1,0 +1,89 @@
+#custom-navbar-styles {
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+  width: 100%;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  padding-left: 40px;
+}
+
+.my-nav-container {
+  margin: 0;
+  position: relative;
+  left: 10px;
+  padding-left: 26px;
+}
+.logo {
+  width: 130px;
+}
+
+.nav-right {
+  width: 30%;
+  justify-content: space-around;
+  align-items: center;
+  /* background-color: red; */
+}
+
+.charging-icon {
+  margin-bottom: 5px;
+}
+
+.find-stations {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.nav-link {
+  color: black;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+  color: black;
+  font-weight: 700;
+  transform: translateY(-2px);
+}
+
+.signin-btn,
+.login-btn-2 {
+  border-radius: 30px;
+  height: 28px;
+  font-size: 14px;
+  padding: 0;
+  width: 73px;
+}
+
+.login-btn-2 {
+  background-color: black;
+  color: white;
+}
+.login-btn-2:hover {
+  border: 1px solid black;
+  color: black;
+  background-color: white;
+}
+
+.navbar-brand-logo {
+  cursor: pointer;
+}
+
+/* media query  */
+@media screen and (max-width: 768px) {
+  .nav-right {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .nav-right {
+    width: 20%;
+    margin-right: 20px;
+  }
+  .nav-right-login {
+    width: 50%;
+    margin-right: 0;
+  }
+}
