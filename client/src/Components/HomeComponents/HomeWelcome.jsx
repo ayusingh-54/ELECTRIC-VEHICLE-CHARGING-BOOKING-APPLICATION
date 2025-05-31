@@ -130,9 +130,9 @@ const HomeWelcome = () => {
                   className="search-input"
                 />
               </InputGroup>
-              <Button className="search-button" onClick={handleSearch}>
+              {/* <Button className="search-button" onClick={handleSearch}>
                 Find Stations
-              </Button>
+              </Button> */}
             </div>
           </div>
 

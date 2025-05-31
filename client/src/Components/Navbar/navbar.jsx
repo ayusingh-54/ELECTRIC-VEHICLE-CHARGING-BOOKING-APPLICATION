@@ -5,7 +5,7 @@ import Stack from "react-bootstrap/Stack";
 import { useState } from "react";
 import { FaChargingStation } from "react-icons/fa6";
 import Button from "react-bootstrap/Button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { LoginContext } from "../../Context/LoginContext";
 import { useContext } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
@@ -97,6 +97,23 @@ const NavbarComponent = () => {
                   <span className="find-stations">
                     <FaMapMarkerAlt className="charging-icon" />
                     Map View
+                  </span>
+                </Nav.Link>
+
+                <Nav.Link
+                  className="nav-link"
+                  onClick={() => navigate("/about")}
+                >
+                  <span className="find-stations">About Us</span>
+                </Nav.Link>
+
+                <Nav.Link
+                  className="nav-link"
+                  onClick={() => navigate("/contact")}
+                >
+                  <span className="find-stations">
+                    <FaMapMarkerAlt className="charging-icon" />
+                    Contact
                   </span>
                 </Nav.Link>
 

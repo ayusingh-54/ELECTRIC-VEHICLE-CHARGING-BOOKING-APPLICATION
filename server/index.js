@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const path = require("path");
 
 // Load environment variables
 dotenv.config();
@@ -17,24 +18,75 @@ const PORT = process.env.PORT || 3000;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // Vite default port
+    origin:
+      process.env.NODE_ENV === "production"
+        ? process.env.FRONTEND_URL || "https://your-domain.com"
+        : "http://localhost:5173",
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-// Routes
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("X-XSS-Protection", "1; mode=block");
+  next();
+});
+
+// API Routes
 app.use("/user", userRouter);
 app.use("/ev", evRouter);
 app.use("/booking", bookingRouter);
 
-// Root route
+// Serve static files in production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../client/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  });
+}
+
+// Root route for API
 app.get("/", (req, res) => {
   res.json({
-    message: "EvoltSaft Server is running!",
+    message: "Evoltsoft API Server is running!",
+    version: "1.0.0",
+    environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
   });
+});
+
+// Health check endpoint
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "OK",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message:
+      process.env.NODE_ENV === "production"
+        ? "Internal server error"
+        : err.message,
+  });
+});
+
+// 404 handler for API routes
+app.use("/*", (req, res) => {
+  if (process.env.NODE_ENV === "production") {
+    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  } else {
+    res.status(404).json({ message: "API endpoint not found" });
+  }
 });
 
 // Database connection
@@ -44,24 +96,23 @@ mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("📦 Connected to MongoDB successfully");
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+      console.log(`📍 API URL: http://localhost:${PORT}/api`);
+    });
   })
   .catch((error) => {
-    console.error("MongoDB connection error:", error);
+    console.error("❌ MongoDB connection error:", error);
+    process.exit(1);
   });
 
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    message: "Something went wrong!",
-    error: process.env.NODE_ENV === "production" ? {} : err.stack,
+// Graceful shutdown
+process.on("SIGTERM", () => {
+  console.log("SIGTERM received, shutting down gracefully");
+  mongoose.connection.close(() => {
+    console.log("MongoDB connection closed");
+    process.exit(0);
   });
 });
-
-// Start server
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
-
-module.exports = app;
