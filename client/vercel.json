@@ -23,6 +23,6 @@
     }
   ],
   "env": {
-    "VITE_BASE_URL": "@VITE_BASE_URL"
+    "VITE_BASE_URL": "https://electric-vehicle-charging-booking-a.vercel.app"
   }
 }
