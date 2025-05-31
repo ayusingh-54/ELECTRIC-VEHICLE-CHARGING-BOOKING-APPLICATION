@@ -48,6 +48,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   })
 );
+
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
@@ -63,15 +64,6 @@ app.use((req, res, next) => {
 app.use("/user", userRouter);
 app.use("/ev", evRouter);
 app.use("/booking", bookingRouter);
-
-// Serve static files in production
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../client/dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-  });
-}
 
 // Root route for API
 app.get("/", (req, res) => {
@@ -89,6 +81,7 @@ app.get("/health", (req, res) => {
     status: "OK",
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
+    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
   });
 });
 
@@ -104,32 +97,46 @@ app.use((err, req, res, next) => {
 });
 
 // 404 handler for API routes
-app.use("/*", (req, res) => {
-  if (process.env.NODE_ENV === "production") {
-    res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-  } else {
-    res.status(404).json({ message: "API endpoint not found" });
-  }
+app.use("*", (req, res) => {
+  res.status(404).json({ 
+    message: "API endpoint not found",
+    path: req.originalUrl 
+  });
 });
 
 // Database connection
-mongoose
-  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/ev-locator", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
-    console.log("📦 Connected to MongoDB successfully");
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-      console.log(`📍 API URL: http://localhost:${PORT}/api`);
+const connectDB = async () => {
+  try {
+    const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ev-locator";
+    
+    if (!mongoURI) {
+      throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
     });
-  })
-  .catch((error) => {
+    
+    console.log("📦 Connected to MongoDB successfully");
+  } catch (error) {
     console.error("❌ MongoDB connection error:", error);
     process.exit(1);
+  }
+};
+
+// Start server
+const startServer = async () => {
+  await connectDB();
+  
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+    console.log(`📍 API URL: http://localhost:${PORT}`);
   });
+};
+
+startServer();
 
 // Graceful shutdown
 process.on("SIGTERM", () => {
