@@ -1,6 +1,6 @@
 import Container from "react-bootstrap/esm/Container";
 import Image from "react-bootstrap/Image";
-import { InputGroup, Form, Button, Card, Row, Col } from "react-bootstrap";
+import { InputGroup, Form, Button, Card, Row, Col, Toast, ToastContainer } from "react-bootstrap";
 import {
   FaLocationDot,
   FaChargingStation,
@@ -8,14 +8,17 @@ import {
   FaLeaf,
 } from "react-icons/fa6";
 import { useMediaQuery } from "react-responsive";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { LoginContext } from "../../Context/LoginContext";
 import "./styles/homeComponent.css";
 
 const HomeWelcome = () => {
+  const { isUserLogin } = useContext(LoginContext);
   const [searchLocation, setSearchLocation] = useState("");
   const [typedText, setTypedText] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [showLoginAlert, setShowLoginAlert] = useState(false);
   const navigate = useNavigate();
 
   const words = ["Fast", "Eco-friendly", "Reliable", "Smart"];
@@ -53,19 +56,43 @@ const HomeWelcome = () => {
   }, [currentWordIndex]);
 
   const handleSearch = () => {
-    if (searchLocation.trim()) {
-      navigate(`/stations?search=${encodeURIComponent(searchLocation)}`);
+    if (isUserLogin) {
+      if (searchLocation.trim()) {
+        navigate(`/stations?search=${encodeURIComponent(searchLocation)}`);
+      } else {
+        navigate("/stations");
+      }
     } else {
-      navigate("/stations");
+      setShowLoginAlert(true);
     }
   };
 
   const handleGetStarted = () => {
-    navigate("/stations");
+    if (isUserLogin) {
+      navigate("/stations");
+    } else {
+      setShowLoginAlert(true);
+    }
   };
 
   const handleMapView = () => {
-    navigate("/map");
+    if (isUserLogin) {
+      navigate("/map");
+    } else {
+      setShowLoginAlert(true);
+    }
+  };
+
+  const handlePricing = () => {
+    navigate("/pricing");
+  };
+
+  const handleAbout = () => {
+    navigate("/about");
+  };
+
+  const handleContact = () => {
+    navigate("/contact");
   };
 
   return (
@@ -180,6 +207,24 @@ const HomeWelcome = () => {
           </Card>
         </div>
       </Container>
+
+      <ToastContainer position="top-center">
+        <Toast
+          bg="warning"
+          onClose={() => setShowLoginAlert(false)}
+          show={showLoginAlert}
+          animation={true}
+          delay={3000}
+          autohide
+        >
+          <Toast.Body>
+            Please login to access charging stations. 
+            <a href="/login" style={{color: '#fff', textDecoration: 'underline', marginLeft: '5px'}}>
+              Login Now
+            </a>
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
     </div>
   );
 };

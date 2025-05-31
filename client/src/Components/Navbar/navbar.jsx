@@ -59,6 +59,14 @@ const NavbarComponent = () => {
     }
   };
 
+  const redirectMap = () => {
+    if (isUserLogin) {
+      navigate("/map");
+    } else {
+      setShowAlert(true);
+    }
+  };
+
   return (
     <>
       <Navbar
@@ -93,7 +101,7 @@ const NavbarComponent = () => {
                   </span>
                 </Nav.Link>
 
-                <Nav.Link className="nav-link" onClick={() => navigate("/map")}>
+                <Nav.Link className="nav-link" onClick={redirectMap}>
                   <span className="find-stations">
                     <FaMapMarkerAlt className="charging-icon" />
                     Map View
@@ -159,6 +167,10 @@ const NavbarComponent = () => {
                       Find stations{" "}
                       <FaChargingStation className="charging-icon" />
                     </div>
+                    <div className="find-stations" onClick={redirectMap}>
+                      Map View{" "}
+                      <FaMapMarkerAlt className="charging-icon" />
+                    </div>
                     <Nav.Link>
                       <Button onClick={userLogout} className="login-btn-2">
                         {" "}
@@ -185,14 +197,26 @@ const NavbarComponent = () => {
       <ToastContainer position="top-center">
         <Toast
           className="toast-msg"
-          bg="primary"
+          bg="warning"
           onClose={() => setShowAlert(false)}
           show={showAlert}
           animation={true}
-          delay={2000}
+          delay={3000}
           autohide
         >
-          <Toast.Body>Login First.</Toast.Body>
+          <Toast.Body>
+            Please login to access this feature.
+            <a
+              href="/login"
+              style={{
+                color: "#fff",
+                textDecoration: "underline",
+                marginLeft: "5px",
+              }}
+            >
+              Login Now
+            </a>
+          </Toast.Body>
         </Toast>
       </ToastContainer>
     </>

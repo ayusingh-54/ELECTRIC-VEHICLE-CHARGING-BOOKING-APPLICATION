@@ -14,6 +14,7 @@ import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Services from "./Pages/Services";
 import FAQ from "./Pages/FAQ";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 function App() {
   const [isUserLogin, setIsUserLogin] = useState(false);
@@ -35,23 +36,55 @@ function App() {
             <Route path="/" element={<Home />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
-            <Route path="/stations" element={<Station />}></Route>
-            <Route path="/map" element={<MapView />}></Route>
+            <Route
+              path="/stations"
+              element={
+                <ProtectedRoute>
+                  <Station />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/map"
+              element={
+                <ProtectedRoute>
+                  <MapView />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route path="/pricing" element={<Pricing />}></Route>
             <Route path="/about" element={<About />}></Route>
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/services" element={<Services />}></Route>
             <Route path="/faq" element={<FAQ />}></Route>
             <Route path="/fast-charging" element={<Services />}></Route>
-            <Route path="/booking" element={<Station />}></Route>
+            <Route
+              path="/booking"
+              element={
+                <ProtectedRoute>
+                  <Station />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route path="/mobile-app" element={<Services />}></Route>
             <Route path="/corporate" element={<Services />}></Route>
             <Route path="/fleet" element={<Services />}></Route>
             <Route path="/support" element={<Contact />}></Route>
-            <Route path="/profile" element={<ProfilePage />}></Route>
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route
               path="/book-slot/:evStationObjectId"
-              element={<BookSlot />}
+              element={
+                <ProtectedRoute>
+                  <BookSlot />
+                </ProtectedRoute>
+              }
             ></Route>
 
             {/* Admin Routes */}
