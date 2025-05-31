@@ -6,16 +6,23 @@ export const getBaseURL = () => {
     window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1";
 
+  // Default fallback URL
+  const defaultProductionURL =
+    "https://electric-vehicle-charging-booking-a.vercel.app";
+  const defaultDevelopmentURL = "http://localhost:3000";
+
   if (isDevelopment) {
-    return import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+    return import.meta.env.VITE_BASE_URL || defaultDevelopmentURL;
   }
 
-  // Production environment - try multiple sources
-  return (
+  // Production environment with multiple fallback options
+  const productionURL =
     import.meta.env.VITE_BASE_URL ||
-    window.__VITE_BASE_URL__ ||
-    "https://electric-vehicle-charging-booking-a.vercel.app"
-  );
+    window.VITE_BASE_URL ||
+    defaultProductionURL;
+
+  console.log("Using BASE_URL:", productionURL);
+  return productionURL;
 };
 
 export const API_CONFIG = {
@@ -39,13 +46,17 @@ export const debugConfig = () => {
   }
 };
 
-// Validate configuration
+// Validate configuration and provide helpful error messages
 export const validateConfig = () => {
   const baseUrl = getBaseURL();
-  if (!baseUrl || baseUrl === "undefined") {
-    console.error("❌ BASE_URL is not properly configured");
+
+  if (!baseUrl || baseUrl === "undefined" || baseUrl === "null") {
+    console.error(
+      "❌ BASE_URL is not properly configured. Using fallback URL."
+    );
     return false;
   }
-  console.log("✅ Configuration validated:", { baseUrl });
+
+  console.log("✅ Configuration validated. BASE_URL:", baseUrl);
   return true;
 };

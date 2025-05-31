@@ -32,9 +32,9 @@ export default defineConfig({
     },
   },
   define: {
-    "process.env": process.env,
-    // Ensure environment variables are available at build time
-    __VITE_BASE_URL__: JSON.stringify(
+    "process.env": {},
+    // Provide fallback for missing environment variables
+    "import.meta.env.VITE_BASE_URL": JSON.stringify(
       process.env.VITE_BASE_URL ||
         "https://electric-vehicle-charging-booking-a.vercel.app"
     ),
