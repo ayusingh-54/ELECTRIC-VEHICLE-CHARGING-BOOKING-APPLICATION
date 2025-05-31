@@ -1,7 +1,7 @@
 import { InputGroup, Form } from "react-bootstrap";
 import { FaSearchLocation } from "react-icons/fa";
 import { Toast, ToastContainer } from "react-bootstrap";
-import StationTable from "../../StationTable/StationTable";
+import StationTable from "../../StationTable/stationTable";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MyModel from "./MyModel.jsx";
