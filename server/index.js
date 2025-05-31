@@ -106,6 +106,12 @@ app.get("/", (req, res) => {
     environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
     mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
+    // Add debug info for environment variables
+    debug: {
+      allEnvKeys: Object.keys(process.env).filter(key => key.startsWith('MONGODB') || key.startsWith('JWT')),
+      nodeEnv: process.env.NODE_ENV,
+      vercelEnv: process.env.VERCEL_ENV,
+    }
   });
 });
 
