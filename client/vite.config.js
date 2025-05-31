@@ -4,8 +4,20 @@ import react from "@vitejs/plugin-react";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    host: true, // Allow external connections
+    port: 5173,
+    proxy: {
+      "/api": {
+        target: process.env.VITE_BASE_URL || "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
   build: {
     outDir: "dist",
+    assetsDir: "assets",
     sourcemap: false,
     minify: "terser",
     rollupOptions: {
@@ -19,9 +31,8 @@ export default defineConfig({
       },
     },
   },
-  server: {
-    port: 5173,
-    host: true,
+  define: {
+    "process.env": {},
   },
   preview: {
     port: 4173,
