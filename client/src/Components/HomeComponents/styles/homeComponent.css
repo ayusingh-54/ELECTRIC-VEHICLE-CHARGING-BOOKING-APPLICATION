@@ -217,37 +217,42 @@
 }
 
 .primary-btn {
-  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(45deg, #ff6b6b, #ff8e53);
   border: none;
-  padding: 15px 30px;
-  border-radius: 50px;
-  color: white;
+  border-radius: 25px;
+  padding: 15px 35px;
   font-weight: 600;
-  font-size: 16px;
-  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+  font-size: 1.1rem;
+  color: white;
   transition: all 0.3s ease;
+  min-width: 160px;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
 }
 
 .primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(255, 107, 107, 0.6);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 107, 107, 0.5);
+  background: linear-gradient(45deg, #ff8e53, #ff6b6b);
 }
 
 .secondary-btn {
-  background: transparent;
-  border: 2px solid white;
-  padding: 15px 30px;
-  border-radius: 50px;
-  color: white;
+  background: linear-gradient(45deg, #4ecdc4, #44a08d);
+  border: 2px solid transparent;
+  border-radius: 25px;
+  padding: 15px 35px;
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.1rem;
+  color: white;
   transition: all 0.3s ease;
+  min-width: 160px;
+  box-shadow: 0 4px 15px rgba(78, 205, 196, 0.4);
 }
 
 .secondary-btn:hover {
-  background: white;
-  color: #667eea;
-  transform: translateY(-2px);
+  background: linear-gradient(45deg, #44a08d, #4ecdc4);
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.5);
 }
 
 .home-welcome-img-div {

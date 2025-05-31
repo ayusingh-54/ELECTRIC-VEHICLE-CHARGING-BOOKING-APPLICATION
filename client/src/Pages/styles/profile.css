@@ -62,3 +62,272 @@
 .sidebar-items > div:hover {
   background-color: #e6e3ff;
 }
+
+.profile-page {
+  margin-top: 80px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.sidebar-col {
+  padding: 0;
+}
+
+.profile-sidebar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  height: 100vh;
+  position: sticky;
+  top: 80px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.sidebar-header {
+  padding: 30px 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.back-btn {
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 15px;
+  display: block;
+  padding: 0;
+}
+
+.back-btn:hover {
+  color: #5a6fd8;
+}
+
+.sidebar-header h4 {
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-menu {
+  padding: 20px 0;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #666;
+  font-weight: 500;
+}
+
+.sidebar-item:hover {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+}
+
+.sidebar-item.active {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  color: white;
+  border-right: 4px solid #667eea;
+}
+
+.sidebar-item svg {
+  margin-right: 12px;
+  font-size: 1.2rem;
+}
+
+.content-col {
+  padding: 40px;
+}
+
+.profile-content {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  min-height: 600px;
+}
+
+.section-header {
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #f8f9fa;
+}
+
+.section-header h2 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.section-header p {
+  color: #666;
+  margin: 0;
+}
+
+.booking-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.booking-header h5 {
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+}
+
+.booking-details {
+  margin-bottom: 20px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.detail-icon {
+  margin-right: 10px;
+  color: #667eea;
+  width: 16px;
+}
+
+.booking-actions {
+  text-align: right;
+}
+
+.empty-state {
+  border: none;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.notification-group {
+  margin-bottom: 30px;
+}
+
+.notification-group h5 {
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-check {
+  padding-left: 2.5rem;
+}
+
+.form-check-input:checked {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+.btn-primary {
+  background: linear-gradient(45deg, #667eea, #764ba2);
+  border: none;
+  border-radius: 25px;
+  padding: 12px 30px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.btn-outline-primary {
+  border-color: #667eea;
+  color: #667eea;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+  background-color: #667eea;
+  border-color: #667eea;
+}
+
+.form-control, .form-select {
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+  padding: 12px 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .profile-sidebar {
+    position: relative;
+    height: auto;
+  }
+  
+  .content-col {
+    padding: 20px;
+  }
+  
+  .profile-content {
+    padding: 25px;
+  }
+  
+  .sidebar-menu {
+    display: flex;
+    overflow-x: auto;
+    padding: 10px 0;
+  }
+  
+  .sidebar-item {
+    flex-shrink: 0;
+    padding: 10px 15px;
+    margin-right: 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  
+  .sidebar-item.active {
+    border-right: none;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .booking-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .booking-actions {
+    text-align: left;
+    width: 100%;
+  }
+  
+  .sidebar-item span {
+    display: none;
+  }
+  
+  .sidebar-item svg {
+    margin-right: 0;
+  }
+}

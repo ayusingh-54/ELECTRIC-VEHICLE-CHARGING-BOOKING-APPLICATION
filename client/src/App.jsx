@@ -13,6 +13,7 @@ import Pricing from "./Pages/Pricing";
 import About from "./Pages/About";
 import Contact from "./Pages/Contact";
 import Services from "./Pages/Services";
+import FAQ from "./Pages/FAQ";
 
 function App() {
   const [isUserLogin, setIsUserLogin] = useState(false);
@@ -40,6 +41,7 @@ function App() {
             <Route path="/about" element={<About />}></Route>
             <Route path="/contact" element={<Contact />}></Route>
             <Route path="/services" element={<Services />}></Route>
+            <Route path="/faq" element={<FAQ />}></Route>
             <Route path="/fast-charging" element={<Services />}></Route>
             <Route path="/booking" element={<Station />}></Route>
             <Route path="/mobile-app" element={<Services />}></Route>
