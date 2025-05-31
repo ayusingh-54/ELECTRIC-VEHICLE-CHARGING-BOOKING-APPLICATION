@@ -1,21 +1,7 @@
 import Container from "react-bootstrap/esm/Container";
 import Image from "react-bootstrap/Image";
-import {
-  InputGroup,
-  Form,
-  Button,
-  Card,
-  Row,
-  Col,
-  Toast,
-  ToastContainer,
-} from "react-bootstrap";
-import {
-  FaLocationDot,
-  FaChargingStation,
-  FaBolt,
-  FaLeaf,
-} from "react-icons/fa6";
+import { Card, Toast, ToastContainer } from "react-bootstrap";
+import { FaBolt, FaLeaf, FaChargingStation } from "react-icons/fa6";
 import { useMediaQuery } from "react-responsive";
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +10,6 @@ import "./styles/homeComponent.css";
 
 const HomeWelcome = () => {
   const { isUserLogin } = useContext(LoginContext);
-  const [searchLocation, setSearchLocation] = useState("");
   const [typedText, setTypedText] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
@@ -63,46 +48,6 @@ const HomeWelcome = () => {
 
     return () => clearInterval(typeInterval);
   }, [currentWordIndex]);
-
-  const handleSearch = () => {
-    if (isUserLogin) {
-      if (searchLocation.trim()) {
-        navigate(`/stations?search=${encodeURIComponent(searchLocation)}`);
-      } else {
-        navigate("/stations");
-      }
-    } else {
-      setShowLoginAlert(true);
-    }
-  };
-
-  const handleGetStarted = () => {
-    if (isUserLogin) {
-      navigate("/stations");
-    } else {
-      setShowLoginAlert(true);
-    }
-  };
-
-  const handleMapView = () => {
-    if (isUserLogin) {
-      navigate("/map");
-    } else {
-      setShowLoginAlert(true);
-    }
-  };
-
-  const handlePricing = () => {
-    navigate("/pricing");
-  };
-
-  const handleAbout = () => {
-    navigate("/about");
-  };
-
-  const handleContact = () => {
-    navigate("/contact");
-  };
 
   return (
     <div className="home-welcome-container">
@@ -149,36 +94,6 @@ const HomeWelcome = () => {
                 <p>Green Energy</p>
               </div>
             </div>
-          </div>
-
-          <div className="home-search-container">
-            <div className="search-wrapper">
-              <InputGroup className="search-input-group">
-                <InputGroup.Text className="search-icon">
-                  <FaLocationDot />
-                </InputGroup.Text>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter your location or city..."
-                  value={searchLocation}
-                  onChange={(e) => setSearchLocation(e.target.value)}
-                  onKeyPress={(e) => e.key === "Enter" && handleSearch()}
-                  className="search-input"
-                />
-              </InputGroup>
-              {/* <Button className="search-button" onClick={handleSearch}>
-                Find Stations
-              </Button> */}
-            </div>
-          </div>
-
-          <div className="action-buttons">
-            <Button className="primary-btn" onClick={handleGetStarted}>
-              Get Started
-            </Button>
-            <Button className="secondary-btn" onClick={handleMapView}>
-              View Map
-            </Button>
           </div>
         </div>
       </Container>

@@ -557,6 +557,15 @@
     height: 100%;
     max-height: 250px;
   }
+  
+  /* push the floating card below the hero image */
+  .home-welcome-img-div .floating-card {
+    position: static !important;
+    top: auto !important;
+    right: auto !important;
+    transform: none !important;
+    margin: 16px auto;
+  }
 }
 
 @media screen and (max-width: 600px) {
