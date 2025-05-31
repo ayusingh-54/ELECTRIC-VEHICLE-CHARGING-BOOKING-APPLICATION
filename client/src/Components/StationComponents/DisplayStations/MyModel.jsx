@@ -240,6 +240,44 @@ const MyModel = ({
                       required
                     />
                   </div>
+
+                  {/* add search & current-location controls */}
+                  <div className="mb-3 d-flex gap-2">
+                    <input
+                      className="form-control"
+                      value={searchLocation}
+                      onChange={(e) => setSearchLocation(e.target.value)}
+                      type="text"
+                      placeholder="Search for location"
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={handleLocationSearch}
+                    >
+                      Search
+                    </button>
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary"
+                      onClick={getCurrentLocation}
+                    >
+                      Use Current
+                    </button>
+                  </div>
+
+                  {/* conditional embedded map */}
+                  {showLocationPicker && (
+                    <div className="mb-3" style={{ height: "300px" }}>
+                      <iframe
+                        title="pick-location"
+                        width="100%"
+                        height="100%"
+                        style={{ border: 0, borderRadius: 8 }}
+                        src={`https://maps.google.com/maps?q=${coordinates.lat},${coordinates.lng}&z=15&output=embed`}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
 
