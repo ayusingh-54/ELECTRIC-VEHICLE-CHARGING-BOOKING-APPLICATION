@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const path = require("path");
 
 // Load environment variables
 dotenv.config();
@@ -13,7 +12,39 @@ const evRouter = require("./Router/ev.router.js");
 const bookingRouter = require("./Router/booking.router.js");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
+// Global mongoose connection
+let isConnected = false;
+
+const connectDB = async () => {
+  if (isConnected) {
+    return;
+  }
+
+  try {
+    const mongoURI = process.env.MONGODB_URI;
+
+    if (!mongoURI) {
+      throw new Error("MONGODB_URI is not defined in environment variables");
+    }
+
+    await mongoose.connect(mongoURI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      bufferCommands: false,
+      bufferMaxEntries: 0,
+      maxPoolSize: 10,
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+    });
+
+    isConnected = true;
+    console.log("📦 Connected to MongoDB successfully");
+  } catch (error) {
+    console.error("❌ MongoDB connection error:", error);
+    throw error;
+  }
+};
 
 // Middleware
 app.use(
@@ -26,9 +57,8 @@ app.use(
         "http://localhost:3000",
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "http://192.168.23.106:5173",
         process.env.FRONTEND_URL,
-        "https://ev-locator-main.vercel.app",
+        "https://ev-locator-frontend.vercel.app",
         "https://your-frontend-domain.vercel.app",
       ].filter(Boolean);
 
@@ -40,7 +70,7 @@ app.use(
       if (allowedOrigins.includes(origin) || isLocalDevelopment) {
         callback(null, true);
       } else {
-        callback(new Error("Not allowed by CORS"));
+        callback(null, true); // Allow all origins for now
       }
     },
     credentials: true,
@@ -60,10 +90,21 @@ app.use((req, res, next) => {
   next();
 });
 
-// API Routes
-app.use("/user", userRouter);
-app.use("/ev", evRouter);
-app.use("/booking", bookingRouter);
+// Database connection middleware
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    res.status(500).json({
+      message: "Database connection failed",
+      error:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal server error",
+    });
+  }
+});
 
 // Root route for API
 app.get("/", (req, res) => {
@@ -81,68 +122,35 @@ app.get("/health", (req, res) => {
     status: "OK",
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
-    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    database:
+      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
   });
 });
 
+// API Routes
+app.use("/user", userRouter);
+app.use("/ev", evRouter);
+app.use("/booking", bookingRouter);
+
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
+  console.error("Error:", err);
   res.status(500).json({
     message:
       process.env.NODE_ENV === "production"
         ? "Internal server error"
         : err.message,
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 });
 
 // 404 handler for API routes
 app.use("*", (req, res) => {
-  res.status(404).json({ 
+  res.status(404).json({
     message: "API endpoint not found",
-    path: req.originalUrl 
+    path: req.originalUrl,
   });
 });
 
-// Database connection
-const connectDB = async () => {
-  try {
-    const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ev-locator";
-    
-    if (!mongoURI) {
-      throw new Error("MONGODB_URI is not defined in environment variables");
-    }
-
-    await mongoose.connect(mongoURI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    
-    console.log("📦 Connected to MongoDB successfully");
-  } catch (error) {
-    console.error("❌ MongoDB connection error:", error);
-    process.exit(1);
-  }
-};
-
-// Start server
-const startServer = async () => {
-  await connectDB();
-  
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-    console.log(`📍 API URL: http://localhost:${PORT}`);
-  });
-};
-
-startServer();
-
-// Graceful shutdown
-process.on("SIGTERM", () => {
-  console.log("SIGTERM received, shutting down gracefully");
-  mongoose.connection.close(() => {
-    console.log("MongoDB connection closed");
-    process.exit(0);
-  });
-});
+// Export for Vercel
+module.exports = app;
