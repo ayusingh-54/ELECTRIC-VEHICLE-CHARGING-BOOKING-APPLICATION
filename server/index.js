@@ -17,31 +17,39 @@ const app = express();
 let isConnected = false;
 
 const connectDB = async () => {
-  if (isConnected) {
+  if (isConnected && mongoose.connection.readyState === 1) {
+    console.log("Using existing database connection");
     return;
   }
 
   try {
-    const mongoURI = process.env.MONGODB_URI;
+    console.log("Connecting to database...");
 
-    if (!mongoURI) {
-      throw new Error("MONGODB_URI is not defined in environment variables");
+    // Check if MONGODB_URI exists
+    if (!process.env.MONGODB_URI) {
+      throw new Error("MONGODB_URI environment variable is not set");
     }
 
-    await mongoose.connect(mongoURI, {
+    console.log("MongoDB URI exists, attempting connection...");
+
+    const mongooseOptions = {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       bufferCommands: false,
       bufferMaxEntries: 0,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 5000,
+      serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
-    });
+      family: 4, // Use IPv4, skip trying IPv6
+    };
+
+    await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
 
     isConnected = true;
     console.log("📦 Connected to MongoDB successfully");
   } catch (error) {
-    console.error("❌ MongoDB connection error:", error);
+    console.error("❌ MongoDB connection error:", error.message);
+    isConnected = false;
     throw error;
   }
 };
@@ -90,47 +98,61 @@ app.use((req, res, next) => {
   next();
 });
 
-// Database connection middleware
-app.use(async (req, res, next) => {
-  try {
-    await connectDB();
-    next();
-  } catch (error) {
-    res.status(500).json({
-      message: "Database connection failed",
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : "Internal server error",
-    });
-  }
-});
-
-// Root route for API
+// Root route for API (no database connection needed)
 app.get("/", (req, res) => {
   res.json({
     message: "Evoltsoft API Server is running!",
     version: "1.0.0",
     environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
+    mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
   });
 });
 
 // Health check endpoint
-app.get("/health", (req, res) => {
-  res.status(200).json({
-    status: "OK",
-    uptime: process.uptime(),
-    timestamp: new Date().toISOString(),
-    database:
-      mongoose.connection.readyState === 1 ? "connected" : "disconnected",
-  });
+app.get("/health", async (req, res) => {
+  try {
+    await connectDB();
+    res.status(200).json({
+      status: "OK",
+      uptime: process.uptime(),
+      timestamp: new Date().toISOString(),
+      database:
+        mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "ERROR",
+      message: "Database connection failed",
+      error: error.message,
+      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
+    });
+  }
 });
 
-// API Routes
-app.use("/user", userRouter);
-app.use("/ev", evRouter);
-app.use("/booking", bookingRouter);
+// Database connection middleware for API routes
+const dbMiddleware = async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (error) {
+    console.error("Database middleware error:", error);
+    res.status(500).json({
+      message: "Database connection failed",
+      error:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal server error",
+      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
+    });
+  }
+};
+
+// API Routes with database middleware
+app.use("/user", dbMiddleware, userRouter);
+app.use("/ev", dbMiddleware, evRouter);
+app.use("/booking", dbMiddleware, bookingRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
