@@ -37,7 +37,7 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 5000,
       socketTimeoutMS: 45000,
       family: 4,
       dbName: "ev-locator",
@@ -47,8 +47,6 @@ const connectDB = async () => {
 
     isConnected = true;
     console.log("📦 Connected to MongoDB successfully");
-    console.log(`📊 Database: ${mongoose.connection.db.databaseName}`);
-    console.log(`🔗 Host: ${mongoose.connection.host}`);
   } catch (error) {
     console.error("❌ MongoDB connection error:", error.message);
     isConnected = false;
@@ -74,12 +72,12 @@ app.use(
       ].filter(Boolean);
 
       // Allow any origin that matches the pattern for local development
-      const isLocalDevelopment = origin.match(
+      const isLocalDevelopment = origin && origin.match(
         /^http:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+):\d+$/
       );
 
       // Check if origin matches Vercel pattern
-      const isVercelApp = /^https:\/\/.*\.vercel\.app$/.test(origin);
+      const isVercelApp = origin && /^https:\/\/.*\.vercel\.app$/.test(origin);
 
       if (
         allowedOrigins.some((allowed) => {
@@ -91,7 +89,7 @@ app.use(
       ) {
         callback(null, true);
       } else {
-        // For now, allow all origins to prevent CORS issues
+        // For production, allow all origins to prevent CORS issues
         callback(null, true);
       }
     },
@@ -152,19 +150,18 @@ const dbMiddleware = async (req, res, next) => {
     console.error("Database middleware error:", error);
     res.status(500).json({
       message: "Database connection failed",
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : "Internal server error",
+      error: process.env.NODE_ENV === "development" ? error.message : "Internal server error",
     });
   }
 };
 
-// Add request logging middleware
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  next();
-});
+// Add request logging middleware (only in development)
+if (process.env.NODE_ENV === "development") {
+  app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
+  });
+}
 
 // API Routes with database middleware
 app.use("/user", dbMiddleware, userRouter);
@@ -176,10 +173,7 @@ app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
   res.status(500).json({
     message: "Internal server error",
-    error:
-      process.env.NODE_ENV === "development"
-        ? err.message
-        : "Something went wrong",
+    error: process.env.NODE_ENV === "development" ? err.message : "Something went wrong",
   });
 });
 
@@ -195,7 +189,7 @@ app.use("*", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 // Start server only if not in Vercel environment
-if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+if (!process.env.VERCEL && process.env.NODE_ENV !== "production") {
   app.listen(PORT, () => {
     console.log(`🚀 Server running on port ${PORT}`);
     console.log(`📍 Local URL: http://localhost:${PORT}`);
@@ -204,5 +198,5 @@ if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
   });
 }
 
-// Export for Vercel
+// Export for Vercel (this is crucial for Vercel deployment)
 module.exports = app;

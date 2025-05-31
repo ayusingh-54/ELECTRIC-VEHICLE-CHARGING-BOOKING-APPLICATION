@@ -4,9 +4,10 @@
   "description": "EV Locator Backend Server",
   "main": "index.js",
   "scripts": {
-    "start": "node --no-deprecation index.js",
+    "start": "node index.js",
     "dev": "nodemon --no-deprecation index.js",
     "dev:verbose": "nodemon index.js",
+    "vercel-build": "echo 'Build completed'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
@@ -21,7 +22,7 @@
     "nodemon": "^3.0.1"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "keywords": [
     "ev",
