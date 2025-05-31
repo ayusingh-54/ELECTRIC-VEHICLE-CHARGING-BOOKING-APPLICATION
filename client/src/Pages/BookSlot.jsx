@@ -9,7 +9,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Toast, ToastContainer } from "react-bootstrap";
 
 const BookSlot = () => {
-  const { isUserLogin, setIsUserLogin, userInfo, setUserInfo } = useContext(LoginContext);
+  const { isUserLogin, setIsUserLogin, userInfo, setUserInfo } =
+    useContext(LoginContext);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
   const [activeStation, setActiveStation] = useState({});
 

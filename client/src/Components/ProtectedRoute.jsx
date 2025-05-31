@@ -25,15 +25,17 @@ const ProtectedRoute = ({ children }) => {
   if (!isUserLogin) {
     return (
       <>
-        <div style={{ 
-          padding: "150px 20px", 
-          textAlign: "center",
-          background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
-          minHeight: "100vh"
-        }}>
+        <div
+          style={{
+            padding: "150px 20px",
+            textAlign: "center",
+            background: "linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)",
+            minHeight: "100vh",
+          }}
+        >
           <h2>Authentication Required</h2>
           <p>Please login to access this feature.</p>
-          <button 
+          <button
             onClick={() => navigate("/login")}
             style={{
               background: "linear-gradient(45deg, #667eea, #764ba2)",
@@ -41,7 +43,7 @@ const ProtectedRoute = ({ children }) => {
               border: "none",
               padding: "12px 30px",
               borderRadius: "25px",
-              cursor: "pointer"
+              cursor: "pointer",
             }}
           >
             Login Now
@@ -56,9 +58,7 @@ const ProtectedRoute = ({ children }) => {
             delay={3000}
             autohide
           >
-            <Toast.Body>
-              Please login to access this feature.
-            </Toast.Body>
+            <Toast.Body>Please login to access this feature.</Toast.Body>
           </Toast>
         </ToastContainer>
       </>

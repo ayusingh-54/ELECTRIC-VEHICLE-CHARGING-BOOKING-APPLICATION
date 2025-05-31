@@ -1,6 +1,15 @@
 import Container from "react-bootstrap/esm/Container";
 import Image from "react-bootstrap/Image";
-import { InputGroup, Form, Button, Card, Row, Col, Toast, ToastContainer } from "react-bootstrap";
+import {
+  InputGroup,
+  Form,
+  Button,
+  Card,
+  Row,
+  Col,
+  Toast,
+  ToastContainer,
+} from "react-bootstrap";
 import {
   FaLocationDot,
   FaChargingStation,
@@ -218,8 +227,15 @@ const HomeWelcome = () => {
           autohide
         >
           <Toast.Body>
-            Please login to access charging stations. 
-            <a href="/login" style={{color: '#fff', textDecoration: 'underline', marginLeft: '5px'}}>
+            Please login to access charging stations.
+            <a
+              href="/login"
+              style={{
+                color: "#fff",
+                textDecoration: "underline",
+                marginLeft: "5px",
+              }}
+            >
               Login Now
             </a>
           </Toast.Body>

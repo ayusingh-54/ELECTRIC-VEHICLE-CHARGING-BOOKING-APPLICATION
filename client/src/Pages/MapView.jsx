@@ -7,12 +7,8 @@ import { LoginContext } from "../Context/LoginContext";
 import { Toast, ToastContainer } from "react-bootstrap";
 
 const MapView = () => {
-  const {
-    isUserLogin,
-    setIsUserLogin,
-    userInfo,
-    setUserInfo,
-  } = useContext(LoginContext);
+  const { isUserLogin, setIsUserLogin, userInfo, setUserInfo } =
+    useContext(LoginContext);
   const [showLoginAlert, setShowLoginAlert] = useState(false);
   const navigate = useNavigate();
 

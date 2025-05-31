@@ -168,8 +168,7 @@ const NavbarComponent = () => {
                       <FaChargingStation className="charging-icon" />
                     </div>
                     <div className="find-stations" onClick={redirectMap}>
-                      Map View{" "}
-                      <FaMapMarkerAlt className="charging-icon" />
+                      Map View <FaMapMarkerAlt className="charging-icon" />
                     </div>
                     <Nav.Link>
                       <Button onClick={userLogout} className="login-btn-2">
