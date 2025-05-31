@@ -1,4 +1,3 @@
-import Table from "react-bootstrap/Table";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 import "./stationTable.css";
@@ -11,7 +10,7 @@ const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
 
   return (
     <div className="ev-table-container">
-      <Table className="" striped bordered hover>
+      <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
             <th>No.</th>
@@ -20,7 +19,6 @@ const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
             <th>Total Ports</th>
             <th>Rate/hr</th>
             {role !== "ev-station" && <th>Book Slots</th>}
-
             {role !== "user" && <th> Delete Station</th>}
           </tr>
         </thead>
@@ -45,7 +43,6 @@ const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
                     </button>
                   </td>
                 )}
-
                 {role !== "user" && (
                   <td>
                     <button
@@ -62,7 +59,7 @@ const StationTable = ({ allStations, deleteStation, bookSlot, role }) => {
             );
           })}
         </tbody>
-      </Table>
+      </table>
     </div>
   );
 };
