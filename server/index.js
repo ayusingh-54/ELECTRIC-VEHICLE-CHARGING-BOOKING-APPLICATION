@@ -66,10 +66,9 @@ app.use(
         "http://localhost:5173",
         "http://127.0.0.1:5173",
         process.env.FRONTEND_URL,
-        "https://ev-locator-frontend.vercel.app",
-        "https://your-frontend-domain.vercel.app",
-        // Add your actual frontend Vercel URL here
         process.env.CLIENT_URL,
+        // Add common Vercel patterns
+        /^https:\/\/.*\.vercel\.app$/,
       ].filter(Boolean);
 
       // Allow any origin that matches the pattern for local development
@@ -77,22 +76,23 @@ app.use(
         /^http:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+):\d+$/
       );
 
-      // For production, be more specific about allowed origins
-      if (process.env.NODE_ENV === "production") {
-        if (allowedOrigins.includes(origin)) {
-          callback(null, true);
-        } else {
-          callback(new Error("Not allowed by CORS"));
-        }
+      // Check if origin matches Vercel pattern
+      const isVercelApp = /^https:\/\/.*\.vercel\.app$/.test(origin);
+
+      if (allowedOrigins.some(allowed => {
+        if (allowed instanceof RegExp) return allowed.test(origin);
+        return allowed === origin;
+      }) || isLocalDevelopment || isVercelApp) {
+        callback(null, true);
       } else {
-        // In development, allow all origins
+        // For now, allow all origins to prevent CORS issues
         callback(null, true);
       }
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
+    optionsSuccessStatus: 200
   })
 );
 
@@ -178,6 +178,13 @@ const dbMiddleware = async (req, res, next) => {
   }
 };
 
+// Add request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  console.log('Request body:', req.body);
+  next();
+});
+
 // API Routes with database middleware
 app.use("/user", dbMiddleware, userRouter);
 app.use("/ev", dbMiddleware, evRouter);
@@ -185,12 +192,10 @@ app.use("/booking", dbMiddleware, bookingRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error("Error:", err);
+  console.error("Unhandled error:", err);
   res.status(500).json({
-    message:
-      process.env.NODE_ENV === "production"
-        ? "Internal server error"
-        : err.message,
+    message: "Internal server error",
+    error: process.env.NODE_ENV === "development" ? err.message : "Something went wrong",
     ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 });

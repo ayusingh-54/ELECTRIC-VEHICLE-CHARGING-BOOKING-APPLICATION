@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 const { UserModel } = require("../Models/user.model.js");
 
 const JWT_SECRET_KEY =
@@ -9,6 +8,8 @@ const JWT_SECRET_KEY =
 const registerUser = async (req, res) => {
   try {
     const { name, email, password, phoneNumber, role } = req.body;
+
+    console.log("Registration attempt:", { name, email, phoneNumber, role });
 
     if (!name || !email || !password || !phoneNumber) {
       return res.status(400).json({ message: "Please fill all fields" });
@@ -37,35 +38,39 @@ const registerUser = async (req, res) => {
 
     await newUser.save();
 
+    console.log("User registered successfully:", newUser._id);
     return res.status(201).json({ message: "Registration Completed" });
   } catch (error) {
     console.error("Registration error:", error);
-    return res
-      .status(500)
-      .json({ message: "Server Error", error: error.message });
+    return res.status(500).json({
+      message: "Server Error",
+      error:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal server error",
+    });
   }
 };
 
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    console.log("Login attempt:", { email });
+
     if (!email || !password) {
       return res.status(400).json({ error: "Please fill all fields" });
     }
 
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "Email or password is incorrect." });
+      return res.status(404).json({ message: "Email or password is incorrect." });
     }
 
     // Compare the provided password with the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res
-        .status(401)
-        .json({ message: "Email or password is incorrect" });
+      return res.status(401).json({ message: "Email or password is incorrect" });
     }
 
     const token = jwt.sign(
@@ -80,6 +85,8 @@ const loginUser = async (req, res) => {
       { expiresIn: "100h" }
     );
 
+    console.log("User logged in successfully:", user._id);
+
     return res.status(200).json({
       message: "Login success.",
       user: {
@@ -93,7 +100,13 @@ const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
-    res.status(500).json({ message: "Server Error", error: error.message });
+    res.status(500).json({
+      message: "Server Error",
+      error:
+        process.env.NODE_ENV === "development"
+          ? error.message
+          : "Internal server error",
+    });
   }
 };
 
