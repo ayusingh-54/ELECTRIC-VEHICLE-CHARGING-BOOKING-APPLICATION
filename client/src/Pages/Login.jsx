@@ -19,7 +19,31 @@ import "./styles/login.css";
 
 const Login = () => {
   const location = useLocation();
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+  // Better BASE_URL configuration with fallbacks
+  const getBaseURL = () => {
+    // Check if we're in development mode
+    if (import.meta.env.DEV || window.location.hostname === "localhost") {
+      return import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+    }
+    // Production URL
+    return (
+      import.meta.env.VITE_BASE_URL ||
+      "https://electric-vehicle-charging-booking-a.vercel.app"
+    );
+  };
+
+  const BASE_URL = getBaseURL();
+
+  // Add debugging with better error context
+  console.log("Login Environment debug:", {
+    NODE_ENV: import.meta.env.MODE,
+    VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
+    BASE_URL: BASE_URL,
+    hostname: window.location.hostname,
+    isDev: import.meta.env.DEV,
+  });
+
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -83,9 +107,30 @@ const Login = () => {
       email,
       password,
     };
+
+    console.log("Attempting to login with URL:", BASE_URL);
+    console.log("Login attempt for email:", email);
+
+    // Validate BASE_URL before making request
+    if (!BASE_URL || BASE_URL === "undefined") {
+      setToastColor("danger");
+      setShowAlert(true);
+      setAlertMsg("Configuration error. Please contact support.");
+      return;
+    }
+
+    // Add timeout and better error handling
+    const axiosConfig = {
+      timeout: 10000, // 10 second timeout
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     axios
-      .post(`${BASE_URL}/user/login`, userData)
+      .post(`${BASE_URL}/user/login`, userData, axiosConfig)
       .then((response) => {
+        console.log("Login response:", response);
         if (response.status === 200) {
           const { token } = response.data;
           const { email, name, phoneNumber, role, _id } = response.data.user;
@@ -108,27 +153,56 @@ const Login = () => {
           setTimeout(() => {
             navigate("/");
           }, 2400);
+        } else {
+          console.log("Unexpected response:", response);
+          setToastColor("warning");
+          setShowAlert(true);
+          setAlertMsg("Unexpected response from server.");
         }
       })
       .catch((err) => {
-        console.log("error: => ", err);
-        if (err.response && err.response.status) {
+        console.error("Login error details:", {
+          message: err.message,
+          code: err.code,
+          response: err.response?.data,
+          status: err.response?.status,
+          url: err.config?.url,
+          baseURL: BASE_URL,
+          timeout: err.code === "ECONNABORTED",
+        });
+
+        // Enhanced error handling
+        if (err.code === "ECONNABORTED") {
+          setToastColor("danger");
+          setShowAlert(true);
+          setAlertMsg(
+            "Request timeout. Please check your connection and try again."
+          );
+        } else if (err.response && err.response.status) {
           const status = err.response.status;
           if (status === 401 || status === 404) {
             setToastColor("danger");
             setShowAlert(true);
-            setAlertMsg(err.response.data.message);
+            setAlertMsg(err.response.data.message || "Invalid credentials.");
           } else {
             setToastColor("danger");
             setShowAlert(true);
             setAlertMsg("Server Error. Please try again later.");
           }
-        } else {
+        } else if (
+          err.code === "ERR_NETWORK" ||
+          err.message.includes("Network Error") ||
+          err.message.includes("ERR_CONNECTION_REFUSED")
+        ) {
           setToastColor("danger");
           setShowAlert(true);
           setAlertMsg(
-            "Cannot connect to server. Please check if the server is running."
+            `Cannot connect to server. Please ensure the server is running on ${BASE_URL} or try again later.`
           );
+        } else {
+          setToastColor("danger");
+          setShowAlert(true);
+          setAlertMsg("Login failed. Please try again later.");
         }
       });
   };
@@ -223,7 +297,7 @@ const Login = () => {
                   <div>User</div>
                   <div>Privacy Policy</div>
                   <div>Send feedback</div>
-                  <div className="ms-auto credit">EvoltSaft © 2025</div>
+                  <div className="ms-auto credit">EV Locator © 2023</div>
                 </Stack>
               </div>
             )}

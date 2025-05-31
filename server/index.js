@@ -36,17 +36,19 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       bufferCommands: false,
-      bufferMaxEntries: 0,
       maxPoolSize: 10,
       serverSelectionTimeoutMS: 10000,
       socketTimeoutMS: 45000,
-      family: 4, // Use IPv4, skip trying IPv6
+      family: 4,
+      dbName: "ev-locator",
     };
 
     await mongoose.connect(process.env.MONGODB_URI, mongooseOptions);
 
     isConnected = true;
     console.log("📦 Connected to MongoDB successfully");
+    console.log(`📊 Database: ${mongoose.connection.db.databaseName}`);
+    console.log(`🔗 Host: ${mongoose.connection.host}`);
   } catch (error) {
     console.error("❌ MongoDB connection error:", error.message);
     isConnected = false;
@@ -79,10 +81,14 @@ app.use(
       // Check if origin matches Vercel pattern
       const isVercelApp = /^https:\/\/.*\.vercel\.app$/.test(origin);
 
-      if (allowedOrigins.some(allowed => {
-        if (allowed instanceof RegExp) return allowed.test(origin);
-        return allowed === origin;
-      }) || isLocalDevelopment || isVercelApp) {
+      if (
+        allowedOrigins.some((allowed) => {
+          if (allowed instanceof RegExp) return allowed.test(origin);
+          return allowed === origin;
+        }) ||
+        isLocalDevelopment ||
+        isVercelApp
+      ) {
         callback(null, true);
       } else {
         // For now, allow all origins to prevent CORS issues
@@ -92,7 +98,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -114,27 +120,6 @@ app.get("/", (req, res) => {
     version: "1.0.0",
     environment: process.env.NODE_ENV || "development",
     timestamp: new Date().toISOString(),
-    mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
-    // Add debug info for environment variables
-    debug: {
-      allEnvKeys: Object.keys(process.env).filter(
-        (key) =>
-          key.startsWith("MONGODB") ||
-          key.startsWith("JWT") ||
-          key.startsWith("MONGO") ||
-          key.startsWith("DATABASE")
-      ),
-      nodeEnv: process.env.NODE_ENV,
-      vercelEnv: process.env.VERCEL_ENV,
-      // Check exact variable names
-      mongodbUri: typeof process.env.MONGODB_URI,
-      mongoDbUrl: typeof process.env.MONGO_DB_URL,
-      jwtSecret: typeof process.env.JWT_SECRET_KEY,
-      // Show first 10 chars of URI if it exists
-      mongoUriPreview: process.env.MONGODB_URI
-        ? process.env.MONGODB_URI.substring(0, 20) + "..."
-        : "undefined",
-    },
   });
 });
 
@@ -148,14 +133,12 @@ app.get("/health", async (req, res) => {
       timestamp: new Date().toISOString(),
       database:
         mongoose.connection.readyState === 1 ? "connected" : "disconnected",
-      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
     });
   } catch (error) {
     res.status(500).json({
       status: "ERROR",
       message: "Database connection failed",
       error: error.message,
-      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
     });
   }
 });
@@ -173,7 +156,6 @@ const dbMiddleware = async (req, res, next) => {
         process.env.NODE_ENV === "development"
           ? error.message
           : "Internal server error",
-      mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
     });
   }
 };
@@ -181,7 +163,6 @@ const dbMiddleware = async (req, res, next) => {
 // Add request logging middleware
 app.use((req, res, next) => {
   console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
-  console.log('Request body:', req.body);
   next();
 });
 
@@ -195,8 +176,10 @@ app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
   res.status(500).json({
     message: "Internal server error",
-    error: process.env.NODE_ENV === "development" ? err.message : "Something went wrong",
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+    error:
+      process.env.NODE_ENV === "development"
+        ? err.message
+        : "Something went wrong",
   });
 });
 
@@ -207,6 +190,19 @@ app.use("*", (req, res) => {
     path: req.originalUrl,
   });
 });
+
+// Port configuration
+const PORT = process.env.PORT || 3000;
+
+// Start server only if not in Vercel environment
+if (process.env.NODE_ENV !== "production" && !process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on port ${PORT}`);
+    console.log(`📍 Local URL: http://localhost:${PORT}`);
+    console.log(`🔗 Health check: http://localhost:${PORT}/health`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
+  });
+}
 
 // Export for Vercel
 module.exports = app;

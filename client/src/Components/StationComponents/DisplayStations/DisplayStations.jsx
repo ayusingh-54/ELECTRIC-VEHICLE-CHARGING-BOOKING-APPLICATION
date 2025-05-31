@@ -7,7 +7,17 @@ import axios from "axios";
 import MyModel from "./MyModel.jsx";
 import "./displayStations.css";
 const Displaystations = () => {
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const getBaseURL = () => {
+    if (import.meta.env.DEV || window.location.hostname === "localhost") {
+      return import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+    }
+    return (
+      import.meta.env.VITE_BASE_URL ||
+      "https://electric-vehicle-charging-booking-a.vercel.app"
+    );
+  };
+
+  const BASE_URL = getBaseURL();
   const [allStations, setAllStations] = useState([]);
   const [searchStation, setSearchStation] = useState("");
   const [showAlert, setShowAlert] = useState(false);
@@ -19,18 +29,21 @@ const Displaystations = () => {
     const userData = JSON.parse(localStorage.getItem("user-data")) || null;
 
     setSearchStation("");
-    axios.get(`${BASE_URL}/ev/all-stations`).then((res) => {
-      let visibleStations = res.data.data;
-      if (userData.role === "ev-station") {
-        visibleStations = res.data.data.filter((elem) => {
-          return elem.ownerId === userData._id;
-        });
-      }
-      const reversedData = visibleStations.reverse();
-      setAllStations(reversedData);
-    }).catch((err) => {
-      console.log("error on get all stations", err);
-    })
+    axios
+      .get(`${BASE_URL}/ev/all-stations`)
+      .then((res) => {
+        let visibleStations = res.data.data;
+        if (userData.role === "ev-station") {
+          visibleStations = res.data.data.filter((elem) => {
+            return elem.ownerId === userData._id;
+          });
+        }
+        const reversedData = visibleStations.reverse();
+        setAllStations(reversedData);
+      })
+      .catch((err) => {
+        console.log("error on get all stations", err);
+      });
   };
 
   useEffect(() => {

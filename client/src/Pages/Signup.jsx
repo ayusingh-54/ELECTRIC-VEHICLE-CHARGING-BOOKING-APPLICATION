@@ -35,7 +35,27 @@ const Signup = () => {
     query: "(max-width: 768px)",
   });
 
-  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  // Better BASE_URL configuration with fallbacks
+  const getBaseURL = () => {
+    if (import.meta.env.DEV || window.location.hostname === "localhost") {
+      return import.meta.env.VITE_BASE_URL || "http://localhost:3000";
+    }
+    return (
+      import.meta.env.VITE_BASE_URL ||
+      "https://electric-vehicle-charging-booking-a.vercel.app"
+    );
+  };
+
+  const BASE_URL = getBaseURL();
+
+  // Add debugging
+  console.log("Signup Environment debug:", {
+    NODE_ENV: import.meta.env.MODE,
+    VITE_BASE_URL: import.meta.env.VITE_BASE_URL,
+    BASE_URL: BASE_URL,
+    hostname: window.location.hostname,
+    isDev: import.meta.env.DEV,
+  });
 
   useEffect(() => {
     console.log("path name", location.pathname);
@@ -108,9 +128,29 @@ const Signup = () => {
       phoneNumber,
       password,
     };
+
+    console.log("Attempting to register with URL:", BASE_URL);
+    console.log("Registration data:", { ...userData, password: "[HIDDEN]" });
+
+    // Validate BASE_URL before making request
+    if (!BASE_URL || BASE_URL === "undefined") {
+      setToastColor("danger");
+      setShowAlert(true);
+      setAlertMsg("Configuration error. Please contact support.");
+      return;
+    }
+
+    const axiosConfig = {
+      timeout: 10000,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+
     axios
-      .post(`${BASE_URL}/user/register`, userData)
+      .post(`${BASE_URL}/user/register`, userData, axiosConfig)
       .then((response) => {
+        console.log("Registration response:", response);
         if (response.status === 201) {
           setToastColor("success");
           setShowAlert(true);
@@ -119,22 +159,46 @@ const Signup = () => {
             navigate("/login");
           }, 2400);
         } else {
-          console.log("error: => ", response);
+          console.log("Unexpected response:", response);
+          setToastColor("warning");
+          setShowAlert(true);
+          setAlertMsg("Unexpected response from server.");
         }
       })
       .catch((err) => {
-        console.log("error: => ", err);
-        if (err.response && err.response.status === 400) {
-          console.log("error: => ", err.response.data.message);
+        console.error("Registration error details:", {
+          message: err.message,
+          code: err.code,
+          response: err.response?.data,
+          status: err.response?.status,
+          url: err.config?.url,
+          baseURL: BASE_URL,
+          timeout: err.code === "ECONNABORTED",
+        });
+
+        // Enhanced error handling
+        if (err.code === "ECONNABORTED") {
           setToastColor("danger");
           setShowAlert(true);
-          setAlertMsg(err.response.data.message);
-        } else {
+          setAlertMsg("Request timeout. Please try again.");
+        } else if (err.response && err.response.status === 400) {
+          setToastColor("danger");
+          setShowAlert(true);
+          setAlertMsg(err.response.data.message || "Registration failed.");
+        } else if (
+          err.code === "ERR_NETWORK" ||
+          err.message.includes("Network Error") ||
+          err.message.includes("ERR_CONNECTION_REFUSED")
+        ) {
           setToastColor("danger");
           setShowAlert(true);
           setAlertMsg(
-            "Cannot connect to server. Please check if the server is running."
+            `Cannot connect to server. Please ensure the server is running on ${BASE_URL} or try again later.`
           );
+        } else {
+          setToastColor("danger");
+          setShowAlert(true);
+          setAlertMsg("Registration failed. Please try again later.");
         }
       });
   };
@@ -276,7 +340,7 @@ const Signup = () => {
                   <div>User</div>
                   <div>Privacy Policy</div>
                   <div>Send feedback</div>
-                  <div className="ms-auto credit">EvoltSaft © 2025</div>
+                  <div className="ms-auto credit">EV Locator © 2023</div>
                 </Stack>
               </div>
             )}

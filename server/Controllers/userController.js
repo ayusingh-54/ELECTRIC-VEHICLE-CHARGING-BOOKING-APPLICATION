@@ -64,13 +64,17 @@ const loginUser = async (req, res) => {
 
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return res.status(404).json({ message: "Email or password is incorrect." });
+      return res
+        .status(404)
+        .json({ message: "Email or password is incorrect." });
     }
 
     // Compare the provided password with the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).json({ message: "Email or password is incorrect" });
+      return res
+        .status(401)
+        .json({ message: "Email or password is incorrect" });
     }
 
     const token = jwt.sign(
