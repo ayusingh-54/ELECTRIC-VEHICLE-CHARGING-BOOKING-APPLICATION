@@ -105,6 +105,37 @@ Evoltsoft is a full-stack web application that helps electric vehicle owners fin
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:5000
 
+## 🌐 Deployment
+
+### Vercel Deployment (Frontend)
+
+1. **Push your code to GitHub**
+
+2. **Connect to Vercel**
+
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Select the `client` folder as the root directory
+
+3. **Configure Environment Variables in Vercel**
+   In your Vercel project settings, add these environment variables:
+
+   ```
+   VITE_BASE_URL=https://your-backend-url.com
+   VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+   ```
+
+4. **Deploy**
+   - Vercel will automatically build and deploy your frontend
+
+### Backend Deployment Options
+
+- **Railway/Render**: For Node.js backend hosting
+- **MongoDB Atlas**: For cloud database
+- **Heroku**: Alternative backend hosting
+
+**Important**: Make sure to update `VITE_BASE_URL` to point to your deployed backend URL, not localhost.
+
 ## 📱 Usage
 
 1. **Sign Up/Login** - Create your Evoltsoft account

@@ -10,9 +10,10 @@ export const getBaseURL = () => {
     return import.meta.env.VITE_BASE_URL || "http://localhost:3000";
   }
 
-  // Production environment
+  // Production environment - try multiple sources
   return (
     import.meta.env.VITE_BASE_URL ||
+    window.__VITE_BASE_URL__ ||
     "https://electric-vehicle-charging-booking-a.vercel.app"
   );
 };
@@ -36,4 +37,15 @@ export const debugConfig = () => {
       hostname: window.location.hostname,
     });
   }
+};
+
+// Validate configuration
+export const validateConfig = () => {
+  const baseUrl = getBaseURL();
+  if (!baseUrl || baseUrl === "undefined") {
+    console.error("❌ BASE_URL is not properly configured");
+    return false;
+  }
+  console.log("✅ Configuration validated:", { baseUrl });
+  return true;
 };
