@@ -108,10 +108,24 @@ app.get("/", (req, res) => {
     mongoUri: process.env.MONGODB_URI ? "Set" : "Not set",
     // Add debug info for environment variables
     debug: {
-      allEnvKeys: Object.keys(process.env).filter(key => key.startsWith('MONGODB') || key.startsWith('JWT')),
+      allEnvKeys: Object.keys(process.env).filter(
+        (key) =>
+          key.startsWith("MONGODB") ||
+          key.startsWith("JWT") ||
+          key.startsWith("MONGO") ||
+          key.startsWith("DATABASE")
+      ),
       nodeEnv: process.env.NODE_ENV,
       vercelEnv: process.env.VERCEL_ENV,
-    }
+      // Check exact variable names
+      mongodbUri: typeof process.env.MONGODB_URI,
+      mongoDbUrl: typeof process.env.MONGO_DB_URL,
+      jwtSecret: typeof process.env.JWT_SECRET_KEY,
+      // Show first 10 chars of URI if it exists
+      mongoUriPreview: process.env.MONGODB_URI
+        ? process.env.MONGODB_URI.substring(0, 20) + "..."
+        : "undefined",
+    },
   });
 });
 
