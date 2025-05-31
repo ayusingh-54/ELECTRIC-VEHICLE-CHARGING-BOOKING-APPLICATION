@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useContext } from "react";
 import { LoginContext } from "../Context/LoginContext";
 import { useParams, useNavigate } from "react-router-dom";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Button } from "react-bootstrap";
 
 const BookSlot = () => {
   const { isUserLogin, setIsUserLogin, userInfo, setUserInfo } =

@@ -68,6 +68,8 @@ app.use(
         process.env.FRONTEND_URL,
         "https://ev-locator-frontend.vercel.app",
         "https://your-frontend-domain.vercel.app",
+        // Add your actual frontend Vercel URL here
+        process.env.CLIENT_URL,
       ].filter(Boolean);
 
       // Allow any origin that matches the pattern for local development
@@ -75,15 +77,22 @@ app.use(
         /^http:\/\/(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+):\d+$/
       );
 
-      if (allowedOrigins.includes(origin) || isLocalDevelopment) {
-        callback(null, true);
+      // For production, be more specific about allowed origins
+      if (process.env.NODE_ENV === "production") {
+        if (allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error("Not allowed by CORS"));
+        }
       } else {
-        callback(null, true); // Allow all origins for now
+        // In development, allow all origins
+        callback(null, true);
       }
     },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    optionsSuccessStatus: 200, // Some legacy browsers choke on 204
   })
 );
 

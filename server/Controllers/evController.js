@@ -80,44 +80,23 @@ const getStationById = async (req, res) => {
 const getStationsByLocation = async (req, res) => {
   try {
     const { location } = req.params;
-    if (location === "" || !location) {
-      const allEvStations = await getAllStationsFun();
-      return res.status(200).send({ data: allEvStations });
-    }
-    const evStation1 = await EvModel.find({
+    const stations = await EvModel.find({
       location: { $regex: location, $options: "i" },
     });
-    const evStation2 = await EvModel.find({
-      stationName: { $regex: location, $options: "i" },
-    });
-
-    // Remove duplicates by converting to Set and back to Array
-    const evStations = [
-      ...new Map(
-        [...evStation1, ...evStation2].map((station) => [
-          station._id.toString(),
-          station,
-        ])
-      ).values(),
-    ];
-
-    return res.status(200).send({ data: evStations });
+    res.status(200).send({ data: stations });
   } catch (error) {
-    console.error("Error in getStationsByLocation:", error);
-    return res.status(500).send({ message: "Server Error" });
+    return res.status(500).send("Server Error");
   }
 };
 
 const deleteStationById = async (req, res) => {
   try {
     const { id } = req.params;
-    const evStation = await EvModel.findByIdAndDelete(id);
-    if (evStation) {
-      return res
-        .status(200)
-        .send({ message: "Station deleted successfully", data: evStation });
+    const deletedStation = await EvModel.findByIdAndDelete(id);
+    if (deletedStation) {
+      return res.status(200).send({ message: "Station deleted successfully" });
     } else {
-      return res.status(404).send({ message: "EV Station not found" });
+      return res.status(404).send({ message: "Station not found" });
     }
   } catch (error) {
     return res.status(500).send("Server Error");
@@ -127,21 +106,21 @@ const deleteStationById = async (req, res) => {
 const bookSlot = async (req, res) => {
   try {
     const { id } = req.params;
-    const evStation = await EvModel.findById(id);
-    if (!evStation) {
-      return res.status(404).send({ message: "EV Station Not Found" });
+    const station = await EvModel.findById(id);
+
+    if (!station) {
+      return res.status(404).send({ message: "Station not found" });
     }
-    if (evStation.availablePorts > 0) {
-      evStation.availablePorts--;
-      await evStation.save();
+
+    if (station.availablePorts > 0) {
+      station.availablePorts -= 1;
+      await station.save();
       return res.status(200).send({
-        data: evStation,
-        message: `${evStation.stationName} Station Booked Successfully.`,
+        message: "Slot booked successfully",
+        station,
       });
     } else {
-      return res.status(400).send({
-        message: `${evStation.stationName} Station is Not Available Right Now.`,
-      });
+      return res.status(400).send({ message: "No available slots" });
     }
   } catch (error) {
     return res.status(500).send("Server Error");

@@ -4,7 +4,7 @@ import NavbarComponent from "../Components/Navbar/navbar";
 import Footer from "../Components/HomeComponents/footer";
 import GoogleMap from "../Components/GoogleMap/GoogleMap";
 import { LoginContext } from "../Context/LoginContext";
-import { Toast, ToastContainer } from "react-bootstrap";
+import { Toast, ToastContainer, Button } from "react-bootstrap";
 
 const MapView = () => {
   const { isUserLogin, setIsUserLogin, userInfo, setUserInfo } =

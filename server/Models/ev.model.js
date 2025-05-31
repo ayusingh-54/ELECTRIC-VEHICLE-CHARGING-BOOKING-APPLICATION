@@ -1,12 +1,33 @@
 const mongoose = require("mongoose");
 
-const evStationSchema = new mongoose.Schema(
+const evSchema = new mongoose.Schema(
   {
     stationName: {
       type: String,
       required: true,
+      trim: true,
     },
     location: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    availablePorts: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    totalPorts: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+    pricePerHour: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    ownerId: {
       type: String,
       required: true,
     },
@@ -20,28 +41,12 @@ const evStationSchema = new mongoose.Schema(
         default: 0,
       },
     },
-    totalPorts: {
-      type: Number,
-      required: true,
-    },
-    availablePorts: {
-      type: Number,
-      required: true,
-    },
-    pricePerHour: {
-      type: Number,
-      required: true,
-    },
-    ownerId: {
-      type: String,
-      required: true,
-    },
   },
   {
     timestamps: true,
   }
 );
 
-const EvModel = mongoose.model("EvStation", evStationSchema);
+const EvModel = mongoose.model("EvStation", evSchema);
 
 module.exports = { EvModel };

@@ -1,4 +1,5 @@
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import {
   FaBolt,
   FaCalendarAlt,
@@ -14,7 +15,6 @@ import NavbarComponent from "../Components/Navbar/navbar";
 import Footer from "../Components/HomeComponents/footer";
 import { useContext, useEffect } from "react";
 import { LoginContext } from "../Context/LoginContext";
-import { useNavigate } from "react-router-dom";
 import "./styles/services.css";
 
 const Services = () => {

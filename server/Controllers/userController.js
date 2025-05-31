@@ -1,37 +1,48 @@
-const { UserModel } = require("../Models/user.model.js");
-const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
+const { UserModel } = require("../Models/user.model.js");
+
+const JWT_SECRET_KEY =
+  process.env.JWT_SECRET_KEY || "your-fallback-secret-key-change-in-production";
 
 const registerUser = async (req, res) => {
   try {
-    const { name, email, phoneNumber, password, role } = req.body;
-    if (!name || !email || !phoneNumber || !password || !role) {
-      return res.status(400).json({ message: "All fields are required." });
+    const { name, email, password, phoneNumber, role } = req.body;
+
+    if (!name || !email || !password || !phoneNumber) {
+      return res.status(400).json({ message: "Please fill all fields" });
     }
 
-    if (email) {
-      const existUser = await UserModel.findOne({ email });
-      if (existUser) {
-        return res.status(400).json({ message: "Email already used." });
-      }
+    // Check if user already exists
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "User already exists with this email" });
     }
 
-    // Hash the password before saving
+    // Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    // Create new user
     const newUser = new UserModel({
       name,
       email,
-      phoneNumber,
       password: hashedPassword,
-      role,
+      phoneNumber,
+      role: role || "user",
     });
+
     await newUser.save();
+
     return res.status(201).json({ message: "Registration Completed" });
   } catch (error) {
-    return res.status(500).send("Server Error");
+    console.error("Registration error:", error);
+    return res
+      .status(500)
+      .json({ message: "Server Error", error: error.message });
   }
 };
 
@@ -39,13 +50,14 @@ const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(404).send({ error: "Please fill all fields" });
+      return res.status(400).json({ error: "Please fill all fields" });
     }
+
     const user = await UserModel.findOne({ email });
     if (!user) {
       return res
         .status(404)
-        .send({ message: "Email or password is incorrect." });
+        .json({ message: "Email or password is incorrect." });
     }
 
     // Compare the provided password with the hashed password
@@ -53,7 +65,7 @@ const loginUser = async (req, res) => {
     if (!isPasswordValid) {
       return res
         .status(401)
-        .send({ message: "Email or password is incorrect" });
+        .json({ message: "Email or password is incorrect" });
     }
 
     const token = jwt.sign(
@@ -68,9 +80,20 @@ const loginUser = async (req, res) => {
       { expiresIn: "100h" }
     );
 
-    return res.status(200).send({ message: "Login success.", user, token });
+    return res.status(200).json({
+      message: "Login success.",
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phoneNumber: user.phoneNumber,
+        role: user.role,
+      },
+      token,
+    });
   } catch (error) {
-    res.status(500).send(error, "Server Error");
+    console.error("Login error:", error);
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
 

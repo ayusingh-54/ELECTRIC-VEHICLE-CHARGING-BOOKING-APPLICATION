@@ -11,6 +11,7 @@ const bookAStation = async (req, res) => {
       vehicleType,
       vehicleNumber,
     } = req.body;
+
     if (
       !userObjectId ||
       !evStationObjectId ||
@@ -22,6 +23,10 @@ const bookAStation = async (req, res) => {
     }
 
     const evStation = await EvModel.findById(evStationObjectId);
+    if (!evStation) {
+      return res.status(404).send({ message: "EV Station not found" });
+    }
+
     const exisitingBookings = await BookingModel.find({
       evStation: evStationObjectId,
       bookingDate,
@@ -46,7 +51,10 @@ const bookAStation = async (req, res) => {
       .status(201)
       .send({ message: "Booking Successfully Completed.", newBooking });
   } catch (err) {
-    return res.status(500).send({ message: "Server Error" });
+    console.error("Booking error:", err);
+    return res
+      .status(500)
+      .send({ message: "Server Error", error: err.message });
   }
 };
 
@@ -58,7 +66,8 @@ const getAllBookings = async (req, res) => {
       .exec();
     return res.status(200).send({ data: allBookings });
   } catch (error) {
-    console.log(error);
+    console.error("Get all bookings error:", error);
+    return res.status(500).send({ message: "Server Error" });
   }
 };
 
@@ -134,19 +143,19 @@ const deleteSlotById = async (req, res) => {
     if (!id) {
       return res.status(400).send({ message: "Slot Booking Id is required." });
     }
-    const deletedItem = await BookingModel.findByIdAndDelete(id);
-    if (!deletedItem) {
-      return res.status(404).send({ message: "Slot Booking Not Found. " });
+
+    const deletedBooking = await BookingModel.findByIdAndDelete(id);
+    if (!deletedBooking) {
+      return res.status(404).send({ message: "Booking not found." });
     }
 
-    console.log("deleted item", deletedItem);
-    return res
-      .status(200)
-      .send({ message: "Slot Booking Successfully Deleted." });
+    return res.status(200).send({ message: "Booking cancelled successfully." });
   } catch (error) {
+    console.error("Delete booking error:", error);
     return res.status(500).send({ message: "Server Error" });
   }
 };
+
 module.exports = {
   bookAStation,
   getAllBookings,
