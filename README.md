@@ -40,9 +40,9 @@
 
 **Frontend**
 
-- React 18 • Vite • React Router
-- React Bootstrap • Axios • React Icons
-- Environment via VITE_BASE_URL, Google Maps API
+- Vue 3 • Vite • Vue Router
+- BootstrapVue or Vuetify • Axios • VueUse
+- Environment via VITE_BASE_URL, VITE_GOOGLE_MAPS_API_KEY
 
 **Backend**
 
@@ -65,13 +65,13 @@ evoltsoft/
 ├─ **client/**  
 │ ├─ public/ • index.html, static assets  
 │ ├─ src/  
-│ │ ├─ App.jsx • Routes & context provider  
-│ │ ├─ main.jsx • ReactDOM render  
-│ │ ├─ Context/ • LoginContext  
-│ │ ├─ Components/ • UI components, modals, tables  
-│ │ ├─ Pages/ • Route pages (Home, Stations, Profile…)  
-│ │ ├─ index.css • Global styles  
-│ │ └─ .env • `VITE_BASE_URL`, `VITE_GOOGLE_MAPS_API_KEY`  
+│ │ ├─ main.js • Vue app entry  
+│ │ ├─ App.vue • Root component  
+│ │ ├─ router/ • Vue Router setup  
+│ │ ├─ components/ • UI components  
+│ │ ├─ views/ • Route views (Home, Stations, Profile…)  
+│ │ └─ index.css • Global styles  
+│ ├─ .env • `VITE_BASE_URL`, `VITE_GOOGLE_MAPS_API_KEY`  
 │ ├─ package.json • Scripts: dev, build, preview  
 │ └─ vite.config.js
 
