@@ -208,4 +208,4 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
 - 🛠️ Issues & feedback via GitHub issues
 - 🌐 Project home: https://github.com/ayusingh-54/ELECTRIC-VEHICLE-CHARGING-BOOKING-APPLICATION
 
-Thank you for exploring **Evoltsoft** – powering the future of electric mobility!
+Thank you for exploring **Evoltsoft** – powering the future of electric mobility! MADE BY AYUSH SINGH
