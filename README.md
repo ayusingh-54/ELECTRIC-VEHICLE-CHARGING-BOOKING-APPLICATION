@@ -206,6 +206,6 @@ Distributed under the **MIT License**. See [LICENSE](LICENSE) for details.
 
 - 📧 ayusingh693@gmail.com
 - 🛠️ Issues & feedback via GitHub issues
-- 🌐 Project home: https://github.com/your-username/evoltsoft
+- 🌐 Project home: https://github.com/ayusingh-54/ELECTRIC-VEHICLE-CHARGING-BOOKING-APPLICATION
 
 Thank you for exploring **Evoltsoft** – powering the future of electric mobility!
